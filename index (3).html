@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F4F0;
+    --surface: #FFFFFF;
+    --text: #1C1C1A;
+    --muted: #9A9A93;
+    --weekend: #C8402F;
+    --border: #E4E1D9;
+    --hover: #ECEAE3;
+    --shadow: rgba(28,28,26,0.06);
+  }
+  [data-theme="dark"] {
+    --bg: #121210;
+    --surface: #1A1A18;
+    --text: #F2F1EC;
+    --muted: #6E6E68;
+    --weekend: #FF6B52;
+    --border: #2C2C28;
+    --hover: #232320;
+    --shadow: rgba(0,0,0,0.3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    transition: background 0.35s ease, color 0.35s ease;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .month-title {
+    font-family: 'Limelight', serif;
+    font-weight: 400;
+    font-size: 36px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    cursor: default;
+    user-select: none;
+  }
+
+  .month-title .year {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 20px;
+    margin-left: 8px;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  button.icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    font-family: inherit;
+  }
+
+  button.icon-btn:hover { background: var(--hover); }
+
+  .today-btn {
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 7px 14px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
+  .today-btn:hover { background: var(--hover); }
+
+  .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+
+  .weekdays span {
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-bottom: 6px;
+  }
+
+  .weekdays span.we { color: var(--weekend); opacity: 0.7; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 52px;
+    gap: 2px;
+  }
+
+  .cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text);
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .cell.empty { cursor: default; }
+
+  .cell.adjacent {
+    color: var(--muted);
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .cell.weekend { color: var(--weekend); }
+
+  .cell:not(.empty):hover { background: var(--hover); }
+
+  .cell.adjacent:hover { background: none; }
+
+  .cell span.num {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cell.today span.num {
+    font-weight: 700;
+  }
+
+  .cell.today::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.26;
+    z-index: 0;
+  }
+
+  .cell.today {
+    border-radius: 50%;
+    margin: 1px;
+  }
+
+  .cell.selected {
+    background: var(--text);
+    color: var(--bg) !important;
+    box-shadow: none;
+  }
+
+  .cell.selected::before {
+    display: none;
+  }
+
+  .cell.in-range {
+    background: var(--hover);
+  }
+
+  .cell.in-range::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 22px;
+    min-height: 20px;
+  }
+
+  .diff-readout {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateY(-2px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .diff-readout.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .diff-readout b {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .diff-readout .clear {
+    margin-left: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .theme-toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    transition: background 0.2s ease;
+  }
+  .theme-toggle:hover { background: var(--hover); }
+  .theme-toggle svg { width: 15px; height: 15px; }
+
+  @media (max-width: 420px) {
+    .month-title { font-size: 32px; }
+    .grid { grid-auto-rows: 44px; }
+  }
+</style>
+</head>
+<body data-theme="light">
+
+<div class="card">
+  <div class="topbar">
+    <div class="month-title" id="monthTitle"></div>
+    <button class="today-btn" id="todayBtn"></button>
+  </div>
+
+  <div class="weekdays" id="weekdaysRow"></div>
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+    <div class="controls">
+      <button class="icon-btn" id="prevBtn" aria-label="Previous month">&#8592;</button>
+      <button class="icon-btn" id="nextBtn" aria-label="Next month">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="diff-readout" id="diffReadout"></div>
+</div>
+
+<script>
+(function () {
+  const monthTitle = document.getElementById('monthTitle');
+  const weekdaysRow = document.getElementById('weekdaysRow');
+  const grid = document.getElementById('grid');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const todayBtn = document.getElementById('todayBtn');
+  const themeToggle = document.getElementById('themeToggle');
+  const diffReadout = document.getElementById('diffReadout');
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const weekdayLabels = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const weekdayShort = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  const today = new Date();
+  let viewYear = today.getFullYear();
+  let viewMonth = today.getMonth();
+  let selected = []; // up to 2 Date objects
+
+  todayBtn.textContent = weekdayShort[today.getDay()] + ', ' + monthShort[today.getMonth()] + ' ' + today.getDate();
+  todayBtn.title = 'Jump to today';
+
+  const sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  const moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>';
+
+  function setTheme(t) {
+    document.body.setAttribute('data-theme', t);
+    themeToggle.innerHTML = t === 'dark' ? sunIcon : moonIcon;
+  }
+
+  let theme = 'light';
+  setTheme(theme);
+  themeToggle.addEventListener('click', () => {
+    theme = theme === 'light' ? 'dark' : 'light';
+    setTheme(theme);
+  });
+
+  function isSameDay(a, b) {
+    return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+
+  function renderWeekdays() {
+    weekdaysRow.innerHTML = '';
+    weekdayLabels.forEach((label, i) => {
+      const span = document.createElement('span');
+      span.textContent = label;
+      if (i === 0 || i === 6) span.classList.add('we');
+      weekdaysRow.appendChild(span);
+    });
+  }
+
+  function render() {
+    monthTitle.innerHTML = monthNames[viewMonth] + '<span class="year">' + viewYear + '</span>';
+    grid.innerHTML = '';
+
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+
+    // leading days from the previous month, faded
+    for (let i = 0; i < firstDay; i++) {
+      const dayNum = daysInPrevMonth - firstDay + 1 + i;
+      grid.appendChild(makeAdjacentCell(dayNum));
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cellDate = new Date(viewYear, viewMonth, d);
+      const dow = cellDate.getDay();
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      if (dow === 0 || dow === 6) cell.classList.add('weekend');
+      if (isSameDay(cellDate, today)) cell.classList.add('today');
+
+      if (selected.some(s => isSameDay(s, cellDate))) {
+        cell.classList.add('selected');
+      } else if (selected.length === 2) {
+        const [a, b] = [...selected].sort((x, y) => x - y);
+        if (cellDate > a && cellDate < b) cell.classList.add('in-range');
+      }
+
+      const numSpan = document.createElement('span');
+      numSpan.className = 'num';
+      numSpan.textContent = d;
+      cell.appendChild(numSpan);
+      cell.addEventListener('click', () => handleSelect(cellDate));
+      grid.appendChild(cell);
+    }
+
+    // trailing days from the next month, faded — fill out to a full row
+    const totalCells = firstDay + daysInMonth;
+    const trailingCount = (7 - (totalCells % 7)) % 7;
+    for (let d = 1; d <= trailingCount; d++) {
+      grid.appendChild(makeAdjacentCell(d));
+    }
+
+    updateDiffReadout();
+  }
+
+  function makeAdjacentCell(dayNum) {
+    const cell = document.createElement('div');
+    cell.className = 'cell adjacent';
+    const numSpan = document.createElement('span');
+    numSpan.className = 'num';
+    numSpan.textContent = dayNum;
+    cell.appendChild(numSpan);
+    return cell;
+  }
+
+  function handleSelect(date) {
+    const existingIndex = selected.findIndex(s => isSameDay(s, date));
+    if (existingIndex !== -1) {
+      selected.splice(existingIndex, 1);
+    } else if (selected.length >= 2) {
+      selected = [date];
+    } else {
+      selected.push(date);
+    }
+    render();
+  }
+
+  function updateDiffReadout() {
+    if (selected.length === 2) {
+      const [a, b] = [...selected].sort((x, y) => x - y);
+      const msPerDay = 1000 * 60 * 60 * 24;
+      const diff = Math.round((b - a) / msPerDay);
+      diffReadout.innerHTML = '<b>' + diff + '</b> day' + (diff === 1 ? '' : 's') + ' apart <span class="clear" id="clearBtn">clear</span>';
+      diffReadout.classList.add('show');
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        selected = [];
+        render();
+      });
+    } else if (selected.length === 1) {
+      diffReadout.innerHTML = 'Pick a second date <span class="clear" id="clearBtn">clear</span>';
+      diffReadout.classList.add('show');
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        selected = [];
+        render();
+      });
+    } else {
+      diffReadout.classList.remove('show');
+    }
+  }
+
+  prevBtn.addEventListener('click', () => {
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    render();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    render();
+  });
+
+  todayBtn.addEventListener('click', () => {
+    viewYear = today.getFullYear();
+    viewMonth = today.getMonth();
+    render();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'ArrowRight') nextBtn.click();
+  });
+
+  renderWeekdays();
+  render();
+})();
+</script>
+</body>
+</html>
