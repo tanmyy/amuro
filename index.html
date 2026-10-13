@@ -1,195 +1,409 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Amuro, AI demo playground by Tanmay Kataria</title>
-<meta name="description" content="Amuro is Tanmay Kataria's AI demo playground. Interactive, live demos of applied AI projects: time-series forecasting, recommender systems, and more.">
-<link rel="canonical" href="https://amuro.in/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Amuro, AI demo playground">
-<meta property="og:description" content="Live interactive demos of applied AI projects by Tanmay Kataria.">
-<meta property="og:url" content="https://amuro.in/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0e14'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='30' font-weight='bold' fill='%2338f0a6' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,"/>
+<title>Vedic Chart with Transits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0a0e14; --panel:#10161f; --panel2:#0d131b;
-    --ink:#e8f1ec; --muted:#8b98a5; --line:#1c2634;
-    --green:#38f0a6; --green-dim:rgba(56,240,166,.12);
-    --amber:#ffb224;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1020px;margin:0 auto;padding:0 20px}
-  a{color:var(--green)}
-  /* header */
-  header.site{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,14,20,.9);backdrop-filter:blur(8px);z-index:10}
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px}
-  .brand{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:1.25rem;letter-spacing:.14em;color:var(--ink);text-decoration:none}
-  .brand span{color:var(--green)}
-  .nav-links{display:flex;gap:22px}
-  .nav-links a{color:var(--muted);text-decoration:none;font-size:.92rem}
-  .nav-links a:hover{color:var(--ink)}
-  /* hero */
-  .hero{padding:84px 0 60px;position:relative;overflow:hidden}
-  .hero::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(600px 300px at 20% 10%, rgba(56,240,166,.08), transparent 60%),
-    radial-gradient(500px 260px at 85% 30%, rgba(56,189,240,.07), transparent 60%);pointer-events:none}
-  .kicker{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:.8rem;color:var(--green);background:var(--green-dim);border:1px solid rgba(56,240,166,.25);border-radius:999px;padding:5px 14px;margin-bottom:20px}
-  .hero h1{font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.12;letter-spacing:-.02em;max-width:16ch}
-  .hero h1 .cursor{color:var(--green)}
-  .lede{color:var(--muted);font-size:1.1rem;max-width:56ch;margin-top:18px}
-  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-  .btn{display:inline-block;padding:12px 26px;border-radius:10px;font-weight:700;text-decoration:none;font-size:1rem}
-  .btn-green{background:var(--green);color:#06110c}
-  .btn-green:hover{filter:brightness(1.08)}
-  .btn-ghost{border:1px solid var(--line);color:var(--ink)}
-  .btn-ghost:hover{border-color:var(--muted)}
-  /* terminal strip */
-  .term{margin-top:44px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:640px}
-  .term-bar{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
-  .dot{width:11px;height:11px;border-radius:50%;background:#2a3648}
-  .term-body{padding:18px 20px;font-family:ui-monospace,Menlo,monospace;font-size:.9rem;color:var(--muted);min-height:120px}
-  .term-body .p{color:var(--green)}
-  /* sections */
-  section.block{padding:64px 0}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px}
-  .sec-head h2{font-size:1.6rem;letter-spacing:-.01em}
-  .sec-head p{color:var(--muted);font-size:.92rem}
-  .grid{display:grid;gap:18px;grid-template-columns:1fr}
-  @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:14px;transition:border-color .2s, transform .2s}
-  .card:hover{border-color:rgba(56,240,166,.4)}
-  .card-top{display:flex;align-items:center;justify-content:space-between}
-  .status{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
-  .status.soon{color:var(--amber);background:rgba(255,178,36,.1);border:1px solid rgba(255,178,36,.3)}
-  .status.live{color:var(--green);background:var(--green-dim);border:1px solid rgba(56,240,166,.3)}
-  .card h3{font-size:1.25rem}
-  .card p{color:var(--muted);font-size:.95rem;flex:1}
-  .tags{display:flex;flex-wrap:wrap;gap:8px}
-  .tag{font-family:ui-monospace,Menlo,monospace;font-size:.75rem;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 9px}
-  .card-actions{display:flex;gap:10px;margin-top:4px}
-  .btn-sm{padding:10px 18px;font-size:.9rem;border-radius:8px}
-  .btn-disabled{opacity:.45;cursor:not-allowed}
-  .ghost-note{font-size:.82rem;color:var(--muted)}
-  /* about */
-  .about{background:var(--panel2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .about-grid{display:grid;gap:26px}
-  @media(min-width:720px){.about-grid{grid-template-columns:1.4fr 1fr}}
-  .about h2{font-size:1.6rem;margin-bottom:14px}
-  .about p{color:var(--muted);margin-bottom:12px}
-  .link-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-  .link-list a{display:flex;justify-content:space-between;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 18px;text-decoration:none;color:var(--ink);font-weight:600}
-  .link-list a:hover{border-color:rgba(56,240,166,.4)}
-  .link-list a span:last-child{color:var(--green)}
-  /* footer */
-  footer.site{padding:34px 0;color:var(--muted);font-size:.88rem}
-  footer.site .wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
-  footer.site .mono{font-family:ui-monospace,Menlo,monospace}
+:root{
+  --bg:#f6f3ee; --panel:#ffffff; --panel2:#fffaf2; --ink:#1c1917; --muted:#6b6259; --line:#e7ddd0;
+  --saffron:#ea580c; --saffron2:#ff7a1a; --chart-bg:#141210; --chart-line:#4a4238; --gold:#c9a86a;
+  --chip:#fef3e7; --good:#166534; --warn:#9a3412;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#12100e; --panel:#1c1917; --panel2:#221e1a; --ink:#f5f0e8; --muted:#a8a09a; --line:#332c26; --chip:#2a1f14; --chart-bg:#0c0a09; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;line-height:1.55}
+a{color:var(--saffron)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 18px 44px}
+h1,h2,h3{font-family:"Spectral",Georgia,serif;line-height:1.05;margin:0}
+h1{font-size:clamp(30px,5vw,50px);letter-spacing:-.02em;max-width:700px}
+.lede{font-size:17px;color:var(--muted);max-width:720px;margin:12px 0 0}
+.answer{margin:18px 0;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--saffron);border-radius:10px;display:flex;gap:14px;flex-wrap:wrap}
+.answer strong{color:var(--ink)}
+.answer p{margin:0;font-size:14.5px;color:var(--muted);max-width:820px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border-radius:999px;background:var(--chip);color:var(--saffron);white-space:nowrap;height:fit-content}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:18px;margin-top:18px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h2{font-size:20px;margin-bottom:6px}
+.card h3{font-size:16px}
+.sub{font-size:13px;color:var(--muted);margin:0 0 14px}
+label{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:block;margin:12px 0 5px}
+input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink);font:inherit;font-size:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;padding:11px 14px;border-radius:10px;border:0;background:var(--ink);color:var(--bg);font-weight:700;cursor:pointer;margin-top:16px}
+.btn.orange{background:var(--saffron);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:active{transform:translateY(1px)}
+.smallbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.smallbtns button{flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:600;cursor:pointer;font-size:13px}
+.tnav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:14px}
+.tnav .arrow{width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:18px;font-weight:700;cursor:pointer;line-height:1;padding:0}
+.tnav .arrow:active{transform:translateY(1px)}
+.steptog{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:2px;gap:2px}
+.steptog button{border:0;background:transparent;padding:5px 11px;border-radius:999px;font-weight:700;font-size:12.5px;cursor:pointer;color:var(--muted)}
+.steptog button.active{background:var(--saffron);color:#fff}
+.tnav input[type=date]{width:auto;flex:1 1 150px;min-width:140px;padding:8px 10px}
+.tnav .nowbtn{padding:9px 13px;border-radius:8px;border:1px solid var(--line);background:var(--panel);font-weight:700;cursor:pointer;color:var(--ink);font-size:13px}
+.tnav .tdate-label{font-weight:700;font-size:13.5px;white-space:nowrap}
+.legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:-1px;margin-right:6px}
+.dot.natal{background:#fff;border:2px solid #111;box-shadow:0 0 0 1px #fff inset}
+.dot.transit{background:var(--saffron2)}
+.chartbox{background:var(--chart-bg);border-radius:14px;padding:14px;border:1px solid #2a241e}
+.chartbox svg{width:100%;height:auto;display:block}
+.toggle{display:flex;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px}
+.toggle button{flex:1;border:0;background:transparent;padding:8px 12px;border-radius:999px;font-weight:700;cursor:pointer;color:var(--muted)}
+.toggle button.active{background:var(--ink);color:var(--bg)}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.meta span{font-size:12.5px;background:var(--panel2);border:1px solid var(--line);padding:6px 9px;border-radius:999px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+.orange{color:var(--saffron);font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+.insight{padding:12px 0;border-bottom:1px solid var(--line)}
+.insight:last-child{border:0}
+.insight b{font-family:"Spectral",serif}
+.tag{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:#fef3e7;color:#9a3412}
+@media(prefers-color-scheme:dark){.tag{background:#2b1a0e}}
+.note{font-size:13px;color:var(--muted)}
+.checklist{list-style:none;padding:0;margin:10px 0 0}
+.checklist li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--line);font-size:14px}
+.checklist li:before{content:"";position:absolute;left:2px;top:14px;width:9px;height:9px;border-radius:50%;background:var(--saffron)}
+footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
 </style>
 </head>
 <body>
-<header class="site">
-  <div class="wrap nav">
-    <a class="brand" href="/">AMURO<span>.</span></a>
-    <nav class="nav-links">
-      <a href="#demos">Demos</a>
-      <a href="#about">About</a>
-    </nav>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="wrap">
-    <span class="kicker">ai demo playground</span>
-    <h1>Don't just read about the model. Run it.<span class="cursor">_</span></h1>
-    <p class="lede">Amuro is where my applied AI projects live as interactive demos. Pick a project, feed it inputs, and watch a real trained model respond. No signup, no notebooks to install.</p>
-    <div class="hero-actions">
-      <a class="btn btn-green" href="#demos">Browse the demos</a>
-      <a class="btn btn-ghost" href="https://portfolio.tanmay.online" target="_blank" rel="noopener">Full portfolio</a>
-    </div>
-    <div class="term" aria-hidden="true">
-      <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      <div class="term-body">
-        <div><span class="p">$</span> amuro run ttc-delay-predictor</div>
-        <div>loading model weights... ok</div>
-        <div>forecasting next 5 days... <span class="p">done in 0.8s</span></div>
+<div class="wrap">
+  <div class="grid">
+    <!-- CONTROLS -->
+    <div>
+      <div class="card">
+        <h2>Birth details</h2>
+        <p class="sub">Date, time and place of birth.</p>
+        <label for="bdate">Date of birth</label>
+        <input id="bdate" type="date" value="1998-06-15">
+        <div class="row2">
+          <div><label for="btime">Time of birth</label><input id="btime" type="time" value="10:30"></div>
+          <div><label for="place">Birth place</label>
+            <select id="place">
+              <option value="mississauga">Mississauga, ON</option>
+              <option value="toronto">Toronto, ON</option>
+              <option value="delhi" selected>New Delhi, India</option>
+              <option value="mumbai">Mumbai, India</option>
+              <option value="bangalore">Bengaluru, India</option>
+              <option value="chennai">Chennai, India</option>
+              <option value="kolkata">Kolkata, India</option>
+              <option value="kochi">Kochi, Kerala</option>
+              <option value="custom">Custom lat / lon below</option>
+            </select>
+          </div>
+        </div>
+        <div class="row2">
+          <div><label for="lat">Latitude</label><input id="lat" type="number" step="0.0001" value="28.6139"></div>
+          <div><label for="lon">Longitude</label><input id="lon" type="number" step="0.0001" value="77.2090"></div>
+        </div>
+        <label for="tz">Birth place timezone</label>
+        <select id="tz">
+          <option value="Asia/Kolkata" selected>Asia/Kolkata (IST)</option>
+          <option value="America/Toronto">America/Toronto (ET)</option>
+          <option value="America/Vancouver">America/Vancouver (PT)</option>
+          <option value="America/New_York">America/New_York (ET)</option>
+          <option value="Europe/London">Europe/London</option>
+          <option value="UTC">UTC</option>
+        </select>
+        <button class="btn orange" id="calcBtn">Calculate my chart →</button>
+        <button class="btn ghost" id="exampleBtn">Load example chart</button>
+        <p class="note" style="margin-top:10px">Example: sample chart, 15 Jun 1998, 10:30, New Delhi.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-<section class="block" id="demos">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Demos</h2>
-      <p>2 projects in the lab</p>
     </div>
-    <div class="grid">
-      <article class="card">
-        <div class="card-top">
-          <div class="tags"><span class="tag">time-series</span><span class="tag">deep learning</span></div>
-          <span class="status soon">in the lab</span>
-        </div>
-        <h3>TTC Delay Predictor</h3>
-        <p>A time-series deep learning model that forecasts Toronto transit delays over a multi-day window. Built as group coursework in my Applied AI program. The demo will let you pick a route and see predicted delay patterns.</p>
-        <div class="card-actions">
-          <span class="btn btn-sm btn-green btn-disabled">Launch demo, soon</span>
-        </div>
-        <p class="ghost-note">Demo goes live once the trained weights are packaged.</p>
-      </article>
-      <article class="card">
-        <div class="card-top">
-          <div class="tags"><span class="tag">recommender</span><span class="tag">machine learning</span></div>
-          <span class="status soon">in the lab</span>
-        </div>
-        <h3>RetailRocket Recommender</h3>
-        <p>A recommendation engine trained on a real e-commerce clickstream dataset. The demo will let you browse products and get live recommendations from the trained model.</p>
-        <div class="card-actions">
-          <span class="btn btn-sm btn-green btn-disabled">Launch demo, soon</span>
-        </div>
-        <p class="ghost-note">Demo goes live once the trained weights are packaged.</p>
-      </article>
-      <article class="card">
-        <div class="card-top">
-          <div class="tags"><span class="tag">next up</span></div>
-          <span class="status soon">queued</span>
-        </div>
-        <h3>Next experiment</h3>
-        <p>New demos land here as they come out of my coursework and side projects. If you are hiring for Winter 2027 and want to see something specific, ask.</p>
-        <div class="card-actions">
-          <a class="btn btn-sm btn-ghost" href="https://www.linkedin.com/in/tanmaykataria/" target="_blank" rel="noopener">Get in touch</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
 
-<section class="block about" id="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div>
-        <h2>Built by Tanmay Kataria</h2>
-        <p>I'm a postgraduate student in Applied AI Solutions Development at George Brown Polytechnic, based in Mississauga. I build machine learning systems and put them where people can touch them, which is what this site is for.</p>
-        <p>Currently looking for a Winter 2027 AI co-op in the GTA. If a live demo beats a PDF resume, you are in the right place.</p>
+    <!-- CHART -->
+    <div>
+      <div class="card" style="padding:16px">
+        <div class="tnav" aria-label="Transit date controls">
+          <button class="arrow" id="prevBtn" aria-label="Step transit date back" title="Step back (← arrow key)">‹</button>
+          <div class="steptog" role="group" aria-label="Step size">
+            <button id="stepDay" class="active">Day</button>
+            <button id="stepMonth">Month</button>
+          </div>
+          <button class="arrow" id="nextBtn" aria-label="Step transit date forward" title="Step forward (→ arrow key)">›</button>
+          <input type="date" id="tdate" aria-label="Transit date">
+          <button class="nowbtn" id="nowBtn">Today</button>
+          <span class="tdate-label" id="transitLabel"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+          <div><h2 id="chartTitle">North Indian chart</h2><p class="sub" style="margin:4px 0 0" id="chartSub">—</p></div>
+          <div class="toggle" role="tablist" aria-label="Chart style">
+            <button id="northBtn" class="active">North Indian</button>
+            <button id="southBtn">South Indian</button>
+          </div>
+        </div>
+        <div class="chartbox" id="chartBox"></div>
+        <p class="note" style="margin:10px 0 0"><span class="dot natal"></span><b>White</b> = natal &nbsp;&nbsp;<span class="dot transit"></span><b style="color:var(--saffron)">Orange</b> = transit &nbsp;&nbsp;<b>*</b> = retrograde &nbsp;&nbsp;<b>▲</b> = exalted &nbsp;&nbsp;<b>▼</b> = debilitated</p>
+        <div class="meta" id="metaBar"></div>
       </div>
-      <div>
-        <ul class="link-list">
-          <li><a href="https://portfolio.tanmay.online" target="_blank" rel="noopener"><span>Portfolio</span><span>&rarr;</span></a></li>
-          <li><a href="https://github.com/tanmyy" target="_blank" rel="noopener"><span>GitHub</span><span>&rarr;</span></a></li>
-          <li><a href="https://www.linkedin.com/in/tanmaykataria/" target="_blank" rel="noopener"><span>LinkedIn</span><span>&rarr;</span></a></li>
-        </ul>
-      </div>
+
     </div>
   </div>
-</section>
+</div>
 
-<footer class="site">
-  <div class="wrap">
-    <span class="mono">amuro.in</span>
-    <span>&copy; 2026 Tanmay Kataria. Demos run for illustration; outputs are model predictions, not advice.</span>
-  </div>
-</footer>
+<script>
+// ---------- Astronomy: Schlyter low-precision ----------
+function rev(x){ x=x%360; if(x<0)x+=360; return x; }
+function sind(d){return Math.sin(d*Math.PI/180)} function cosd(d){return Math.cos(d*Math.PI/180)} function atan2d(y,x){return Math.atan2(y,x)*180/Math.PI}
+function dayNumber(dateUTC){ // days since 2000 Jan 0.0 (Dec 31 1999 00h UT) via Julian Date: JD = unix/86400000 + 2440587.5; d = JD - 2451543.5
+  return dateUTC.getTime()/86400000 + 2440587.5 - 2451543.5;
+}
+function eccentricAnomaly(M,e){
+  var E0=M + (180/Math.PI)*e*sind(M)*(1+e*cosd(M));
+  var E=E0;
+  for(var i=0;i<6;i++){ E = E - (E - (180/Math.PI)*e*sind(E) - M)/(1 - e*cosd(E)); }
+  return E;
+}
+function planetHelio(d, el){
+  var M=rev(el.M(d)), E=eccentricAnomaly(M, el.e(d));
+  var xv=el.a(d)*(cosd(E)-el.e(d)), yv=el.a(d)*(Math.sqrt(1-el.e(d)*el.e(d))*sind(E));
+  var v=atan2d(yv,xv), r=Math.sqrt(xv*xv+yv*yv);
+  var N=el.N(d), i=el.i(d), w=el.w(d);
+  var xh=r*(cosd(N)*cosd(v+w)-sind(N)*sind(v+w)*cosd(i));
+  var yh=r*(sind(N)*cosd(v+w)+cosd(N)*sind(v+w)*cosd(i));
+  var zh=r*(sind(v+w)*sind(i));
+  return {lon:rev(atan2d(yh,xh)), lat:atan2d(zh, Math.sqrt(xh*xh+yh*yh)), r:r, M:M, x:xh, y:yh, z:zh};
+}
+var ELS={
+ sun:{N:function(){return 0}, i:function(){return 0}, w:function(d){return 282.9404+4.70935e-5*d}, a:function(){return 1.0}, e:function(d){return 0.016709-1.151e-9*d}, M:function(d){return rev(356.0470+0.9856002585*d)}},
+ moon:{N:function(d){return 125.1228-0.0529538083*d}, i:function(){return 5.1454}, w:function(d){return 318.0634+0.1643573223*d}, a:function(){return 60.2666}, e:function(){return 0.0549}, M:function(d){return rev(115.3654+13.0649929509*d)}},
+ mercury:{N:function(d){return 48.3313+3.24587e-5*d}, i:function(d){return 7.0047+5e-8*d}, w:function(d){return 29.1241+1.01444e-5*d}, a:function(){return 0.387098}, e:function(d){return 0.205635+5.59e-10*d}, M:function(d){return rev(168.6562+4.0923344368*d)}},
+ venus:{N:function(d){return 76.6799+2.4659e-5*d}, i:function(d){return 3.3946+2.75e-8*d}, w:function(d){return 54.8910+1.38374e-5*d}, a:function(){return 0.72333}, e:function(d){return 0.006773-1.302e-9*d}, M:function(d){return rev(48.0052+1.6021302244*d)}},
+ mars:{N:function(d){return 49.5574+2.11081e-5*d}, i:function(d){return 1.8497-1.78e-8*d}, w:function(d){return 286.5016+2.92961e-5*d}, a:function(){return 1.523688}, e:function(d){return 0.093405+2.516e-9*d}, M:function(d){return rev(18.6021+0.5240207766*d)}},
+ jupiter:{N:function(d){return 100.4542+2.76854e-5*d}, i:function(d){return 1.3030-1.557e-7*d}, w:function(d){return 273.8777+1.64505e-5*d}, a:function(){return 5.20256}, e:function(d){return 0.048498+4.469e-9*d}, M:function(d){return rev(19.8950+0.0830853001*d)}},
+ saturn:{N:function(d){return 113.6634+2.3898e-5*d}, i:function(d){return 2.4886-1.081e-7*d}, w:function(d){return 339.3939+2.97561e-5*d}, a:function(){return 9.55475}, e:function(d){return 0.055546-9.499e-9*d}, M:function(d){return rev(316.9670+0.0334442282*d)}}
+};
+function sunPos(d){
+  var el=ELS.sun, M=el.M(d), e=el.e(d), E=eccentricAnomaly(M,e);
+  var xv=cosd(E)-e, yv=Math.sqrt(1-e*e)*sind(E);
+  var v=atan2d(yv,xv), r=Math.sqrt(xv*xv+yv*yv);
+  var lon=rev(v+el.w(d));
+  return {lon:lon, r:r, M:M, x:r*cosd(lon), y:r*sind(lon)};
+}
+function geoLon(d, key){
+  var sun=sunPos(d);
+  if(key==='sun') return sun.lon;
+  if(key==='moon'){
+    var h=planetHelio(d, ELS.moon);
+    var Ms=sun.M, Mm=h.M, Nm=ELS.moon.N(d), D=rev(h.lon - sun.lon), F=rev(h.lon - Nm);
+    var lon=h.lon -1.274*sind(Mm-2*D) +0.658*sind(2*D) -0.186*sind(Ms) -0.059*sind(2*Mm-2*D) -0.057*sind(Mm-2*D+Ms) +0.053*sind(Mm+2*D) +0.046*sind(2*D-Ms) +0.041*sind(Mm-Ms) -0.035*sind(D) -0.031*sind(Mm+Ms) -0.015*sind(2*F-2*D) +0.011*sind(Mm-4*D);
+    return rev(lon);
+  }
+  var hp=planetHelio(d, ELS[key]);
+  // convert AU: moon uses earth radii but planets are AU; sun coords in AU
+  var xg=hp.x + sun.x, yg=hp.y + sun.y, zg=hp.z;
+  // Note: planetHelio for planets already heliocentric in AU, geocentric = helio + sun geocentric (sun.x,y are geocentric)
+  // sun.x = - heliocentric earth; Schlyter: xs,ys geocentric sun; planet geocentric = xh+xs
+  var lon=rev(atan2d(yg,xg));
+  if(key==='jupiter' || key==='saturn'){
+    var Mj=ELS.jupiter.M(d), Msa=ELS.saturn.M(d);
+    if(key==='jupiter') lon += -0.332*sind(2*Mj-5*Msa-67.6) -0.056*sind(2*Mj-5*Msa+21) +0.042*sind(3*Mj-5*Msa+21) -0.036*sind(Mj-2*Msa) +0.022*cosd(Mj-2*Msa) +0.023*sind(2*Mj-3*Msa+52) -0.016*sind(Mj-5*Msa-165);
+    if(key==='saturn') lon += 0.812*sind(2*Mj-5*Msa-67.6) -0.229*cosd(2*Mj-5*Msa-2) +0.119*sind(Mj-5*Msa-3) +0.046*sind(2*Mj-6*Msa-69) +0.014*sind(Mj-3*Msa+32);
+    lon=rev(lon);
+  }
+  return lon;
+}
+function ayanamsa(dateUTC){
+  var y=dateUTC.getUTCFullYear() + (dateUTC.getUTCMonth())/12;
+  // Lahiri approx: 23.85 at 2000, +0.013969 deg/yr (~24.21 in late 2026)
+  return 23.850 + (y-2000)*0.013969;
+}
+function ascendantTropical(dateUTC, lat, lonDeg){
+  var d=dayNumber(dateUTC);
+  var Msun=ELS.sun.M(d), w=ELS.sun.w(d);
+  var GMST0=rev((Msun+w+180)/15); // hours approx via Schlyter: GMST0 = (Ms+w+180)/15
+  var UT=dateUTC.getUTCHours()+dateUTC.getUTCMinutes()/60+dateUTC.getUTCSeconds()/3600;
+  var GMST=GMST0+UT*1.002738, LST=GMST+lonDeg/15; // hours
+  var lstDeg=rev(LST*15);
+  var eps=23.4393-3.563e-7*d;
+  var asc=atan2d(cosd(lstDeg), -sind(lstDeg)*cosd(eps) - Math.tan(lat*Math.PI/180)*sind(eps));
+  return {asc:rev(asc), lst:lstDeg};
+}
+function lonDelta(a,b){ var x=((b-a+540)%360)-180; return x; }
+// Exaltation sign per planet (0=Aries..11=Pisces); debilitation is always the opposite sign
+var EXALT={sun:0, moon:1, mars:9, mercury:5, jupiter:3, venus:11, saturn:6, rahu:1, ketu:7};
+function dignity(key, sign){ return { exalted: EXALT[key]===sign, debilitated: ((EXALT[key]+6)%12)===sign }; }
+function computeChart(dateUTC, lat, lonDeg){
+  var d=dayNumber(dateUTC), aya=ayanamsa(dateUTC);
+  var keys=[['sun','Su','Sun'],['moon','Mo','Moon'],['mars','Ma','Mars'],['mercury','Me','Mercury'],['jupiter','Ju','Jupiter'],['venus','Ve','Venus'],['saturn','Sa','Saturn']];
+  var out={ayanamsa:aya, planets:{}};
+  keys.forEach(function(k){
+    var trop=geoLon(d,k[0]); var sid=rev(trop-aya);
+    var sidNext=rev(geoLon(d+1,k[0])-aya);
+    var retro = lonDelta(sid, sidNext) < 0; // apparent motion: sidereal longitude decreasing day to day
+    var sgn=Math.floor(sid/30), dg=dignity(k[0], sgn);
+    out.planets[k[0]]={key:k[0],abbr:k[1],name:k[2],trop:trop,sid:sid,sign:sgn,deg:sid%30,retro:retro,exalted:dg.exalted,debilitated:dg.debilitated};
+  });
+  // Rahu mean node = Moon N tropical (mean node always moves retrograde; Ketu opposite)
+  var rahuTrop=rev(ELS.moon.N(d)); var rahuSid=rev(rahuTrop-aya);
+  var rahuSidNext=rev(ELS.moon.N(d+1)-aya);
+  var nodeRetro = lonDelta(rahuSid, rahuSidNext) < 0;
+  var rahuSign=Math.floor(rahuSid/30), rdg=dignity('rahu', rahuSign);
+  out.planets.rahu={key:'rahu',abbr:'Ra',name:'Rahu',sid:rahuSid,sign:rahuSign,deg:rahuSid%30,retro:nodeRetro,exalted:rdg.exalted,debilitated:rdg.debilitated};
+  var ketuSid=rev(rahuSid+180);
+  var ketuSign=Math.floor(ketuSid/30), kdg=dignity('ketu', ketuSign);
+  out.planets.ketu={key:'ketu',abbr:'Ke',name:'Ketu',sid:ketuSid,sign:ketuSign,deg:ketuSid%30,retro:nodeRetro,exalted:kdg.exalted,debilitated:kdg.debilitated};
+  var ascT=ascendantTropical(dateUTC,lat,lonDeg);
+  var ascSid=rev(ascT.asc-aya);
+  out.asc={sid:ascSid, sign:Math.floor(ascSid/30), deg:ascSid%30, abbr:'As', name:'Ascendant (Lagna)'};
+  return out;
+}
+// timezone wall -> UTC using Intl
+function wallToUTC(dateStr,timeStr,tz){
+  var parts=dateStr.split('-').map(Number), t=timeStr.split(':').map(Number);
+  var guess=Date.UTC(parts[0],parts[1]-1,parts[2],t[0]||0,t[1]||0,0);
+  for(var i=0;i<3;i++){
+    var dt=new Date(guess);
+    var fmt=new Intl.DateTimeFormat('en-US',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    var p={}; fmt.formatToParts(dt).forEach(function(x){p[x.type]=x.value});
+    var asUTC=Date.UTC(+p.year,+p.month-1,+p.day,+(p.hour%24),+p.minute,+p.second);
+    var diff=guess - (asUTC - guess); // iterative correction simplified below
+    // compute wall target as UTC ms
+    var target=Date.UTC(parts[0],parts[1]-1,parts[2],t[0]||0,t[1]||0,0);
+    var offset=asUTC - guess; // tz wall - utc
+    var newGuess=target - offset;
+    if(newGuess===guess) break; guess=newGuess;
+  }
+  return new Date(guess);
+}
+
+// ---------- UI data ----------
+var SIGNS=[['Aries','Mesha','Ar'],['Taurus','Vrishabha','Ta'],['Gemini','Mithuna','Ge'],['Cancer','Karka','Cn'],['Leo','Simha','Le'],['Virgo','Kanya','Vi'],['Libra','Tula','Li'],['Scorpio','Vrishchika','Sc'],['Sagittarius','Dhanu','Sg'],['Capricorn','Makara','Cp'],['Aquarius','Kumbha','Aq'],['Pisces','Meena','Pi']];
+var NAK=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+function nak(degSid){ var idx=Math.floor(degSid/(360/27)); var pada=Math.floor((degSid%(360/27))/(360/108))+1; return NAK[idx]+' pada '+pada; }
+function fmtDeg(d){ var dd=Math.floor(d), mm=Math.floor((d-dd)*60); return dd+'°'+String(mm).padStart(2,'0')+"'"; }
+var PLACES={mississauga:{lat:43.5890,lon:-79.6441,tz:'America/Toronto'},toronto:{lat:43.6532,lon:-79.3832,tz:'America/Toronto'},delhi:{lat:28.6139,lon:77.2090,tz:'Asia/Kolkata'},mumbai:{lat:19.0760,lon:72.8777,tz:'Asia/Kolkata'},bangalore:{lat:12.9716,lon:77.5946,tz:'Asia/Kolkata'},chennai:{lat:13.0827,lon:80.2707,tz:'Asia/Kolkata'},kolkata:{lat:22.5726,lon:88.3639,tz:'Asia/Kolkata'},kochi:{lat:9.9312,lon:76.2673,tz:'Asia/Kolkata'}};
+var style='north', natal=null, transit=null, natalUTC=null, transitDate=null;
+var stepUnit='day';
+
+function render(){
+  if(!natal||!transit) return;
+  document.getElementById('chartTitle').textContent = style==='north' ? 'North Indian chart' : 'South Indian chart';
+  document.getElementById('chartSub').textContent = 'Lagna '+SIGNS[natal.asc.sign][0]+' ('+SIGNS[natal.asc.sign][1]+') • Moon sign '+SIGNS[natal.planets.moon.sign][0]+' • Ayanamsa '+fmtDeg(natal.ayanamsa);
+  document.getElementById('transitLabel').textContent = 'Transit: '+transitDate.toLocaleDateString('en-CA',{weekday:'short', day:'numeric', month:'short', year:'numeric'});
+  document.getElementById('metaBar').innerHTML = '<span>♈ Lagna: <b>'+SIGNS[natal.asc.sign][1]+' '+fmtDeg(natal.asc.deg)+'</b></span><span>☽ Janma Rashi: <b>'+SIGNS[natal.planets.moon.sign][1]+'</b> • '+nak(natal.planets.moon.sid)+'</span><span>Transit: <b>'+transitDate.toLocaleDateString('en-CA',{dateStyle:'medium'})+'</b></span>';
+  // build house map: for north, house index 1..12 maps sign = lagna+house-1; for south sign fixed
+  var bySign={}; for(var s=0;s<12;s++) bySign[s]={natal:[],transit:[]};
+  bySign[natal.asc.sign].natal.push('As');
+  function mark(p){ return p.abbr + (p.retro?'*':'') + (p.exalted?'▲':'') + (p.debilitated?'▼':''); }
+  Object.values(natal.planets).forEach(function(p){ bySign[p.sign].natal.push(mark(p)); });
+  Object.values(transit.planets).forEach(function(p){ bySign[p.sign].transit.push(mark(p)); });
+  // also transit asc not shown as planet; ignore
+  if(style==='north') renderNorth(bySign); else renderSouth(bySign);
+}
+function svgText(x,y,lines){
+  // lines: [{txt,fill,size,weight}]
+  var out='', startY=y - (lines.length-1)*9;
+  lines.forEach(function(l,i){ out+='<text x="'+x+'" y="'+(startY+i*18)+'" text-anchor="middle" dominant-baseline="middle" fill="'+l.fill+'" font-size="'+(l.size||13)+'" font-weight="'+(l.weight||600)+'" font-family="Public Sans,sans-serif">'+l.txt+'</text>'; });
+  return out;
+}
+function linesFor(sign, bySign, showSignLabel){
+  var d=bySign[sign], lines=[];
+  if(showSignLabel) lines.push({txt:''+(sign+1), fill:'#a89f91', size:10, weight:700});
+  if(d.natal.length) lines.push({txt:d.natal.join(' '), fill:'#ffffff', size:13, weight:700});
+  if(d.transit.length) lines.push({txt:d.transit.join(' '), fill:'#ff8a2a', size:12, weight:700});
+  if(!d.natal.length && !d.transit.length && !showSignLabel) lines.push({txt:'·', fill:'#5a5248', size:12});
+  return lines;
+}
+function renderNorth(bySign){
+  var polys=[
+    '200,0 300,100 200,200 100,100','0,0 200,0 100,100','0,0 100,100 0,200','0,200 100,100 200,200 100,300',
+    '0,200 100,300 0,400','0,400 100,300 200,400','200,400 100,300 200,200 300,300','400,400 200,400 300,300',
+    '400,200 300,300 400,400','400,200 300,100 200,200 300,300','400,0 300,100 400,200','200,0 400,0 300,100'];
+  var cents=[[200,92],[100,30],[42,100],[92,200],[42,300],[100,370],[200,308],[300,370],[358,300],[308,200],[358,100],[300,30]];
+  var svg='<svg viewBox="0 0 400 400" role="img" aria-label="North Indian Vedic chart">';
+  svg+='<rect x="1" y="1" width="398" height="398" fill="#141210" stroke="#c9a86a" stroke-width="2"/>';
+  for(var h=1;h<=12;h++){
+    var sign=(natal.asc.sign + h -1)%12;
+    svg+='<polygon points="'+polys[h-1]+'" fill="'+(h===1?'#1e1a16':'transparent')+'" stroke="#5a4f42" stroke-width="1"/>';
+    var lines=[];
+    lines.push({txt:''+(sign+1), fill:'#a89f91', size:9, weight:700});
+    var d=bySign[sign];
+    if(d.natal.length) lines.push({txt:d.natal.join(' '), fill:'#ffffff', size:12, weight:700});
+    if(d.transit.length) lines.push({txt:d.transit.join(' '), fill:'#ff8a2a', size:11, weight:700});
+    svg+=svgText(cents[h-1][0], cents[h-1][1], lines);
+  }
+  svg+='</svg>';
+  document.getElementById('chartBox').innerHTML=svg;
+}
+function renderSouth(bySign){
+  // fixed sign positions in 4x4 grid: order cells [row,col,sign]
+  var cells=[[0,0,11],[0,1,0],[0,2,1],[0,3,2],[1,0,10],[1,3,3],[2,0,9],[2,3,4],[3,0,8],[3,1,7],[3,2,6],[3,3,5]];
+  var svg='<svg viewBox="0 0 400 400" role="img" aria-label="South Indian Vedic chart">';
+  svg+='<rect x="1" y="1" width="398" height="398" fill="#141210" stroke="#c9a86a" stroke-width="2"/>';
+  svg+='<rect x="100" y="100" width="200" height="200" fill="#1e1a16" stroke="#5a4f42"/>';
+  svg+='<text x="200" y="185" text-anchor="middle" fill="#c9a86a" font-size="13" font-weight="700" font-family="Spectral,serif">Rashi Chakra</text>';
+  svg+='<text x="200" y="205" text-anchor="middle" fill="#a89f91" font-size="10">White natal • Orange transit</text>';
+  svg+='<text x="200" y="225" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">Lagna: '+SIGNS[natal.asc.sign][1]+'</text>';
+  cells.forEach(function(c){
+    var x=c[1]*100, y=c[0]*100, sign=c[2];
+    svg+='<rect x="'+x+'" y="'+y+'" width="100" height="100" fill="transparent" stroke="#5a4f42"/>';
+    if(sign===natal.asc.sign) svg+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+22)+'" y2="'+(y+22)+'" stroke="#c9a86a" stroke-width="2"/>';
+    svg+=svgText(x+50, y+50, linesFor(sign, bySign, true));
+  });
+  svg+='</svg>';
+  document.getElementById('chartBox').innerHTML=svg;
+}
+function calculate(){
+  var bdate=document.getElementById('bdate').value, btime=document.getElementById('btime').value||'12:00';
+  var lat=parseFloat(document.getElementById('lat').value), lon=parseFloat(document.getElementById('lon').value), tz=document.getElementById('tz').value;
+  if(!bdate||isNaN(lat)||isNaN(lon)){ return; }
+  natalUTC=wallToUTC(bdate,btime,tz);
+  natal=computeChart(natalUTC,lat,lon);
+  var tv=document.getElementById('tdate').value;
+  transitDate= tv? new Date(tv+'T12:00:00') : new Date(); // midday local, so the picked day is the day shown
+  // transit chart: observer location does not affect geocentric planetary signs, only transit asc — we do not display transit asc, use birth lat/lon for consistency
+  transit=computeChart(transitDate,lat,lon);
+  render();
+}
+// events
+document.getElementById('place').addEventListener('change',function(e){ var p=PLACES[e.target.value]; if(p){ document.getElementById('lat').value=p.lat; document.getElementById('lon').value=p.lon; document.getElementById('tz').value=p.tz; } });
+document.getElementById('calcBtn').addEventListener('click',calculate);
+document.getElementById('exampleBtn').addEventListener('click',function(){ document.getElementById('bdate').value='1998-06-15'; document.getElementById('btime').value='10:30'; document.getElementById('place').value='delhi'; document.getElementById('lat').value=28.6139; document.getElementById('lon').value=77.2090; document.getElementById('tz').value='Asia/Kolkata'; calculate(); });
+document.getElementById('northBtn').addEventListener('click',function(){ style='north'; this.classList.add('active'); document.getElementById('southBtn').classList.remove('active'); render(); });
+document.getElementById('southBtn').addEventListener('click',function(){ style='south'; this.classList.add('active'); document.getElementById('northBtn').classList.remove('active'); render(); });
+function toDateInput(d){ var p=function(n){return String(n).padStart(2,'0')}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function setTransitNow(){ document.getElementById('tdate').value=toDateInput(new Date()); }
+function currentTransitDate(){ var v=document.getElementById('tdate').value; return v? new Date(v+'T12:00:00') : new Date(); }
+function stepTransit(dir){
+  var d=currentTransitDate();
+  if(stepUnit==='day'){ d.setDate(d.getDate()+dir); }
+  else{ var day=d.getDate(); d.setDate(1); d.setMonth(d.getMonth()+dir); var last=new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); d.setDate(Math.min(day,last)); }
+  document.getElementById('tdate').value=toDateInput(d);
+  calculate();
+}
+document.getElementById('prevBtn').addEventListener('click',function(){ stepTransit(-1); });
+document.getElementById('nextBtn').addEventListener('click',function(){ stepTransit(1); });
+document.getElementById('stepDay').addEventListener('click',function(){ stepUnit='day'; this.classList.add('active'); document.getElementById('stepMonth').classList.remove('active'); });
+document.getElementById('stepMonth').addEventListener('click',function(){ stepUnit='month'; this.classList.add('active'); document.getElementById('stepDay').classList.remove('active'); });
+document.getElementById('nowBtn').addEventListener('click',function(){ setTransitNow(); calculate(); });
+document.getElementById('tdate').addEventListener('change',calculate);
+document.addEventListener('keydown',function(e){
+  if(e.key!=='ArrowLeft' && e.key!=='ArrowRight') return;
+  var t=e.target;
+  if(t && (t.tagName==='INPUT' || t.tagName==='SELECT' || t.tagName==='TEXTAREA')) return; // let form fields keep their own arrow behaviour
+  e.preventDefault();
+  stepTransit(e.key==='ArrowLeft' ? -1 : 1);
+});
+setTransitNow(); calculate();
+</script>
 </body>
 </html>
