@@ -81,6 +81,38 @@ td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 .checklist li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--line);font-size:14px}
 .checklist li:before{content:"";position:absolute;left:2px;top:14px;width:9px;height:9px;border-radius:50%;background:var(--saffron)}
 footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
+.dasha-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+@media(max-width:700px){.dasha-summary{grid-template-columns:1fr 1fr}}
+.dasha-now{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.dasha-now span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block}
+.dasha-now strong{font-size:19px;font-family:"Spectral",serif;display:block;margin:3px 0 1px;line-height:1.1}
+.dasha-now small{color:var(--muted);font-size:12.5px;line-height:1.45;display:block}
+.maha-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.maha-item{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+.maha-item.active{border-color:var(--saffron);box-shadow:0 0 0 1px var(--saffron)}
+.maha-head{width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;text-align:left;background:var(--panel);border:0;padding:13px 14px;cursor:pointer;color:var(--ink);font:inherit}
+.maha-head:hover{background:var(--panel2)}
+.maha-lord{font-family:"Spectral",serif;font-size:18px;font-weight:700;min-width:92px}
+.maha-dates{font-size:13px;color:var(--muted);flex:1 1 220px}
+.maha-dur{font-size:12px;font-weight:700;background:var(--chip);color:var(--saffron);padding:4px 8px;border-radius:999px;white-space:nowrap}
+.maha-now-badge{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:var(--saffron);color:#fff;padding:4px 8px;border-radius:999px}
+.maha-chevron{color:var(--muted);font-size:18px;line-height:1}
+.antar-wrap{border-top:1px solid var(--line);background:var(--panel2);padding:10px 12px 12px}
+.antar-head{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:2px 0 8px}
+.antar-row{border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:6px;overflow:hidden}
+.antar-row.active{border-color:var(--saffron)}
+.antar-btn{width:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:center;text-align:left;background:transparent;border:0;padding:10px 12px;cursor:pointer;color:var(--ink);font:inherit}
+.antar-btn:hover{background:var(--panel2)}
+.antar-lord{font-weight:700;min-width:150px;font-size:14px}
+.antar-dates{font-size:12.5px;color:var(--muted);flex:1 1 200px}
+.prat-wrap{border-top:1px dashed var(--line);padding:10px 12px;background:var(--panel2)}
+.prat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px}
+.prat-item{font-size:12.5px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 9px;line-height:1.45}
+.prat-item.active{border-color:var(--saffron);background:var(--chip)}
+.prat-item b{display:block;font-size:13px}
+.prat-item span{color:var(--muted)}
+.dasha-meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+.dasha-meta span{font-size:12.5px;background:var(--panel2);border:1px solid var(--line);padding:6px 9px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -157,6 +189,21 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
 
     </div>
   </div>
+
+  <!-- DASHA -->
+  <section class="card" id="dashaCard" style="margin-top:18px" aria-label="Vimshottari dasha periods">
+    <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start">
+      <div>
+        <h2>Vimshottari Dasha</h2>
+        <p class="sub" style="margin-bottom:0">Mahadasha &bull; Antardasha &bull; Pratyantardasha &bull; Sookshma — calculated from the Moon's nakshatra at birth. The highlighted periods follow the transit date you select above.</p>
+      </div>
+      <span class="pill">120-year cycle</span>
+    </div>
+    <div class="dasha-meta" id="dashaMeta"></div>
+    <div class="dasha-summary" id="dashaSummary"></div>
+    <div class="maha-list" id="mahaList"></div>
+    <p class="note" style="margin-top:14px">Tap a Mahadasha to see its Antardashas, then tap an Antardasha to see its Pratyantardashas. Dates use a 365.25-day year, the standard Vimshottari convention in most calculators — expect a few days' difference versus software using a 360-day year or exact calendar years. The first Mahadasha is a balance period: only the portion remaining after birth is shown, and its sub-periods are worked out from the dasha's true start before birth, so the Antardasha running at birth is correct.</p>
+  </section>
 </div>
 
 <script>
@@ -294,6 +341,160 @@ var PLACES={mississauga:{lat:43.5890,lon:-79.6441,tz:'America/Toronto'},toronto:
 var style='north', natal=null, transit=null, natalUTC=null, transitDate=null;
 var stepUnit='day';
 
+// ---------- Vimshottari Dasha ----------
+var DASHA_ORDER=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+var DASHA_YEARS={Ketu:7,Venus:20,Sun:6,Moon:10,Mars:7,Rahu:18,Jupiter:16,Saturn:19,Mercury:17};
+var NAK_LORDS=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+var YEAR_MS=365.25*86400000;
+function addYears(date, yrs){ return new Date(date.getTime() + yrs*YEAR_MS); }
+function fmtDate(d){ return d.toLocaleDateString('en-CA',{day:'numeric',month:'short',year:'numeric'}); }
+function fmtDur(yrs){
+  if(yrs>=1){ var y=Math.floor(yrs), m=Math.round((yrs-y)*12); if(m===12){y++;m=0;} return y+'y'+(m?' '+m+'m':''); }
+  var mo=yrs*12; if(mo>=1) return Math.round(mo*10)/10+' months';
+  return Math.round(yrs*365.25)+' days';
+}
+function fmtDurShort(yrs){
+  if(yrs>=1) return (Math.round(yrs*10)/10)+' yrs';
+  if(yrs*12>=1) return (Math.round(yrs*12*10)/10)+' mo';
+  return Math.round(yrs*365.25)+' d';
+}
+function subPeriods(lord, start, totalYears){
+  // returns 9 sub-periods starting with lord itself, proportional to lord years / 120
+  var idx=DASHA_ORDER.indexOf(lord), out=[], cur=new Date(start);
+  for(var i=0;i<9;i++){
+    var sub=DASHA_ORDER[(idx+i)%9];
+    var dur=totalYears * DASHA_YEARS[sub] / 120;
+    var end=addYears(cur, dur);
+    out.push({lord:sub, start:new Date(cur), end:end, years:dur});
+    cur=end;
+  }
+  return out;
+}
+function buildDasha(birthUTC, moonSid){
+  var nakLen=360/27;
+  var nakIdx=Math.floor(moonSid/nakLen);
+  var fracElapsed=((moonSid - nakIdx*nakLen)/nakLen);
+  var startLord=NAK_LORDS[nakIdx];
+  var fullYears=DASHA_YEARS[startLord];
+  var elapsedYears=fracElapsed*fullYears;
+  var balanceYears=fullYears-elapsedYears;
+  var theoStart=addYears(birthUTC, -elapsedYears);
+  var startIdx=DASHA_ORDER.indexOf(startLord);
+  var mahas=[], cur=new Date(theoStart);
+  for(var i=0;i<9;i++){
+    var lord=DASHA_ORDER[(startIdx+i)%9];
+    var yrs=DASHA_YEARS[lord];
+    var end=addYears(cur, yrs);
+    var displayStart = i===0 ? new Date(birthUTC) : new Date(cur);
+    var displayYears = i===0 ? balanceYears : yrs;
+    mahas.push({lord:lord, theoStart:new Date(cur), start:displayStart, end:end, fullYears:yrs, years:displayYears, isBalance:i===0, balanceYears:balanceYears, antardashas:subPeriods(lord, cur, yrs)});
+    cur=end;
+  }
+  // attach pratyantardashas lazily per antardasha
+  mahas.forEach(function(m){
+    m.antardashas.forEach(function(a){ a.pratyantardashas=subPeriods(a.lord, a.start, a.years); a.pratyantardashas.forEach(function(p){ p.sookshma=subPeriods(p.lord, p.start, p.years); }); });
+  });
+  return {nakIdx:nakIdx, nakName:NAK[nakIdx], startLord:startLord, fracElapsed:fracElapsed, balanceYears:balanceYears, fullYears:fullYears, mahas:mahas};
+}
+var dasha=null, expandedMaha=-1, expandedAntar=-1, dashaForBirth=null;
+function findPeriod(list, when){
+  for(var i=0;i<list.length;i++){ if(when>=list[i].start && when<list[i].end) return i; }
+  return -1;
+}
+function findMahaIdx(when){
+  if(!dasha) return -1;
+  for(var i=0;i<dasha.mahas.length;i++){ var m=dasha.mahas[i]; var s=i===0?m.theoStart:m.start; if(when>=s && when<m.end) return i; }
+  return -1;
+}
+function renderDasha(){
+  var metaEl=document.getElementById('dashaMeta'), sumEl=document.getElementById('dashaSummary'), listEl=document.getElementById('mahaList');
+  if(!metaEl||!natal||!natalUTC||!transitDate) return;
+  // rebuild if birth changed
+  var birthKey=natalUTC.getTime()+'|'+natal.planets.moon.sid;
+  if(dashaForBirth!==birthKey){ dasha=buildDasha(natalUTC, natal.planets.moon.sid); dashaForBirth=birthKey; expandedMaha=-1; expandedAntar=-1; }
+  var when=new Date(transitDate);
+  var mi=findMahaIdx(when);
+  if(expandedMaha===-1 && mi>=0) expandedMaha=mi;
+  var maha=mi>=0?dasha.mahas[mi]:null;
+  var antar=null, antarIdx=-1, prat=null, pratIdx=-1, sook=null;
+  if(maha){ antarIdx=findPeriod(maha.antardashas, when); if(antarIdx>=0){ antar=maha.antardashas[antarIdx]; pratIdx=findPeriod(antar.pratyantardashas, when); if(pratIdx>=0){ prat=antar.pratyantardashas[pratIdx]; var si=findPeriod(prat.sookshma, when); if(si>=0) sook=prat.sookshma[si]; } } }
+  metaEl.innerHTML='<span>☽ Moon: <b>'+SIGNS[natal.planets.moon.sign][1]+' '+fmtDeg(natal.planets.moon.deg)+'</b></span>'
+    +'<span>✦ Nakshatra: <b>'+dasha.nakName+'</b> (lord '+dasha.startLord+')</span>'
+    +'<span>Balance of '+dasha.startLord+' at birth: <b>'+fmtDur(dasha.balanceYears)+'</b> of '+dasha.fullYears+' yrs</span>'
+    +'<span>As of: <b>'+fmtDate(when)+'</b></span>';
+  function nowCard(label, lord, period, extra){
+    if(!lord) return '<div class="dasha-now"><span>'+label+'</span><strong>—</strong><small>No period running on this date</small></div>';
+    return '<div class="dasha-now"><span>'+label+'</span><strong>'+lord+'</strong><small>'+fmtDate(period.start)+' – '+fmtDate(period.end)+'<br>'+(extra||'')+'Ends '+fmtDate(period.end)+'</small></div>';
+  }
+  // for balance maha, summary should show display start (birth) not theo start
+  var mahaForCard = maha ? {start:(maha.isBalance?maha.start:maha.theoStart), end:maha.end} : null;
+  sumEl.innerHTML =
+    nowCard('Mahadasha — main', maha?maha.lord:null, mahaForCard, maha?('Age period • '+fmtDurShort(maha.fullYears)+' full cycle<br>'):'')
+    + nowCard('Antardasha — sub', antar?antar.lord:null, antar, maha&&antar?('<b style="color:var(--ink)">'+maha.lord+' / '+antar.lord+'</b><br>'):'')
+    + nowCard('Pratyantardasha', prat?prat.lord:null, prat, maha&&antar&&prat?('<b style="color:var(--ink)">'+maha.lord+' / '+antar.lord+' / '+prat.lord+'</b><br>'):'')
+    + nowCard('Sookshma — micro', sook?sook.lord:null, sook, '');
+  // Mahadasha list
+  var html='';
+  dasha.mahas.forEach(function(m, idx){
+    var isActive=idx===mi, isOpen=idx===expandedMaha;
+    html+='<div class="maha-item'+(isActive?' active':'')+'">';
+    html+='<button type="button" class="maha-head" data-maha="'+idx+'" aria-expanded="'+(isOpen?'true':'false')+'">'
+      +'<span class="maha-lord">'+m.lord+'</span>'
+      +'<span class="maha-dates">'+fmtDate(m.start)+' → '+fmtDate(m.end)+(m.isBalance?' &nbsp;·&nbsp; balance period':'')+'</span>'
+      +(isActive?'<span class="maha-now-badge">Running</span>':'')
+      +'<span class="maha-dur">'+fmtDur(m.years)+'</span>'
+      +'<span class="maha-chevron">'+(isOpen?'▾':'▸')+'</span>'
+      +'</button>';
+    if(isOpen){
+      html+='<div class="antar-wrap"><p class="antar-head">Antardashas in '+m.lord+' Mahadasha — tap one for Pratyantardashas</p>';
+      m.antardashas.forEach(function(a, ai){
+        // skip antardashas that ended before birth (only relevant for balance maha)
+        if(a.end<=natalUTC) return;
+        var aStart = a.start<natalUTC ? natalUTC : a.start;
+        var aActive = maha && antar && a===antar;
+        var aOpen = expandedAntar===ai && expandedMaha===idx;
+        html+='<div class="antar-row'+(aActive?' active':'')+'">'
+          +'<button type="button" class="antar-btn" data-maha="'+idx+'" data-antar="'+ai+'">'
+          +'<span class="antar-lord">'+m.lord+' / '+a.lord+(aActive?' ●':'')+'</span>'
+          +'<span class="antar-dates">'+fmtDate(aStart)+' → '+fmtDate(a.end)+'</span>'
+          +'<span class="maha-dur">'+fmtDur(a.years)+'</span>'
+          +'<span class="maha-chevron">'+(aOpen?'▾':'▸')+'</span>'
+          +'</button>';
+        if(aOpen){
+          html+='<div class="prat-wrap"><p class="antar-head">Pratyantardashas in '+m.lord+' / '+a.lord+'</p><div class="prat-grid">';
+          a.pratyantardashas.forEach(function(p){
+            if(p.end<=natalUTC) return;
+            var pStart=p.start<natalUTC?natalUTC:p.start;
+            var pActive=prat && p===prat;
+            html+='<div class="prat-item'+(pActive?' active':'')+'"><b>'+a.lord+' / '+p.lord+(pActive?' ●':'')+'</b><span>'+fmtDate(pStart)+' → '+fmtDate(p.end)+'<br>'+fmtDur(p.years)+'</span></div>';
+          });
+          html+='</div></div>';
+        }
+        html+='</div>';
+      });
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+  listEl.innerHTML=html;
+  // wire toggles
+  listEl.querySelectorAll('.maha-head').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var idx=parseInt(btn.getAttribute('data-maha'),10);
+      expandedMaha = expandedMaha===idx ? -1 : idx;
+      if(expandedMaha!==idx) expandedAntar=-1;
+      renderDasha();
+    });
+  });
+  listEl.querySelectorAll('.antar-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var ai=parseInt(btn.getAttribute('data-antar'),10);
+      expandedAntar = expandedAntar===ai ? -1 : ai;
+      renderDasha();
+    });
+  });
+}
+
 function render(){
   if(!natal||!transit) return;
   document.getElementById('chartTitle').textContent = style==='north' ? 'North Indian chart' : 'South Indian chart';
@@ -308,6 +509,7 @@ function render(){
   Object.values(transit.planets).forEach(function(p){ bySign[p.sign].transit.push(mark(p)); });
   // also transit asc not shown as planet; ignore
   if(style==='north') renderNorth(bySign); else renderSouth(bySign);
+  renderDasha();
 }
 function svgText(x,y,lines){
   // lines: [{txt,fill,size,weight}]
