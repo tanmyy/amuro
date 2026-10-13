@@ -113,6 +113,12 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
 .prat-item span{color:var(--muted)}
 .dasha-meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
 .dasha-meta span{font-size:12.5px;background:var(--panel2);border:1px solid var(--line);padding:6px 9px;border-radius:999px}
+.place-search{position:relative;margin:0 0 8px}
+.place-search input{padding-right:34px}
+.place-search span{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
+.place-hint{font-size:12.5px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+.place-wrap{margin-top:2px}
+
 </style>
 </head>
 <body>
@@ -125,22 +131,389 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
         <p class="sub">Date, time and place of birth.</p>
         <label for="bdate">Date of birth</label>
         <input id="bdate" type="date" value="1998-06-15">
-        <div class="row2">
-          <div><label for="btime">Time of birth</label><input id="btime" type="time" value="10:30"></div>
-          <div><label for="place">Birth place</label>
-            <select id="place">
-              <option value="mississauga">Mississauga, ON</option>
-              <option value="toronto">Toronto, ON</option>
-              <option value="delhi" selected>New Delhi, India</option>
-              <option value="mumbai">Mumbai, India</option>
-              <option value="bangalore">Bengaluru, India</option>
-              <option value="chennai">Chennai, India</option>
-              <option value="kolkata">Kolkata, India</option>
-              <option value="kochi">Kochi, Kerala</option>
-              <option value="custom">Custom lat / lon below</option>
-            </select>
+        <div><label for="btime">Time of birth</label><input id="btime" type="time" value="10:30"></div>
+        <div class="place-wrap">
+          <label for="placeSearch">Birth place</label>
+          <div class="place-search">
+            <input id="placeSearch" type="search" placeholder="Search places — Jaipur, Toronto, London, Dubai…" autocomplete="off" aria-label="Search birth places">
+            <span aria-hidden="true">⌕</span>
           </div>
-        </div>
+          <select id="place" aria-label="Birth place">
+              <optgroup label="Canada">
+                <option value="mississauga">Mississauga, ON</option>
+                <option value="toronto">Toronto, ON</option>
+                <option value="brampton">Brampton, ON</option>
+                <option value="hamilton">Hamilton, ON</option>
+                <option value="ottawa">Ottawa, ON</option>
+                <option value="montreal">Montreal, QC</option>
+                <option value="vancouver">Vancouver, BC</option>
+                <option value="calgary">Calgary, AB</option>
+                <option value="edmonton">Edmonton, AB</option>
+                <option value="winnipeg">Winnipeg, MB</option>
+                <option value="halifax">Halifax, NS</option>
+                <option value="victoria">Victoria, BC</option>
+                <option value="kelowna">Kelowna, BC</option>
+                <option value="regina">Regina, SK</option>
+                <option value="saskatoon">Saskatoon, SK</option>
+                <option value="quebeccity">Quebec City, QC</option>
+                <option value="gatineau">Gatineau, QC</option>
+                <option value="londonon">London, ON</option>
+                <option value="kitchener">Kitchener-Waterloo, ON</option>
+                <option value="markham">Markham, ON</option>
+                <option value="vaughan">Vaughan, ON</option>
+                <option value="windsor">Windsor, ON</option>
+                <option value="stjohns">St. John's, NL</option>
+                <option value="charlottetown">Charlottetown, PE</option>
+                <option value="fredericton">Fredericton, NB</option>
+                <option value="moncton">Moncton, NB</option>
+                <option value="yellowknife">Yellowknife, NT</option>
+                <option value="whitehorse">Whitehorse, YT</option>
+                <option value="surrey">Surrey, BC</option>
+                <option value="burnaby">Burnaby, BC</option>
+              </optgroup>
+              <optgroup label="India">
+                <option value="delhi" selected>New Delhi, India</option>
+                <option value="mumbai">Mumbai, India</option>
+                <option value="bangalore">Bengaluru, India</option>
+                <option value="chennai">Chennai, India</option>
+                <option value="kolkata">Kolkata, India</option>
+                <option value="hyderabad">Hyderabad, India</option>
+                <option value="pune">Pune, India</option>
+                <option value="ahmedabad">Ahmedabad, India</option>
+                <option value="jaipur">Jaipur, India</option>
+                <option value="lucknow">Lucknow, India</option>
+                <option value="chandigarh">Chandigarh, India</option>
+                <option value="indore">Indore, India</option>
+                <option value="surat">Surat, India</option>
+                <option value="patna">Patna, India</option>
+                <option value="varanasi">Varanasi, India</option>
+                <option value="amritsar">Amritsar, India</option>
+                <option value="ludhiana">Ludhiana, India</option>
+                <option value="kochi">Kochi, Kerala</option>
+                <option value="thiruvananthapuram">Thiruvananthapuram, Kerala</option>
+                <option value="coimbatore">Coimbatore, India</option>
+                <option value="madurai">Madurai, India</option>
+                <option value="bhubaneswar">Bhubaneswar, India</option>
+                <option value="guwahati">Guwahati, India</option>
+                <option value="nagpur">Nagpur, India</option>
+                <option value="visakhapatnam">Visakhapatnam, India</option>
+                <option value="bhopal">Bhopal, Madhya Pradesh</option>
+                <option value="raipur">Raipur, Chhattisgarh</option>
+                <option value="ranchi">Ranchi, Jharkhand</option>
+                <option value="panaji">Panaji, Goa</option>
+                <option value="dehradun">Dehradun, Uttarakhand</option>
+                <option value="shimla">Shimla, Himachal Pradesh</option>
+                <option value="srinagar">Srinagar, Jammu & Kashmir</option>
+                <option value="gangtok">Gangtok, Sikkim</option>
+                <option value="imphal">Imphal, Manipur</option>
+                <option value="aizawl">Aizawl, Mizoram</option>
+                <option value="kohima">Kohima, Nagaland</option>
+                <option value="itanagar">Itanagar, Arunachal Pradesh</option>
+                <option value="shillong">Shillong, Meghalaya</option>
+                <option value="agartala">Agartala, Tripura</option>
+                <option value="gandhinagar">Gandhinagar, Gujarat</option>
+                <option value="vijayawada">Vijayawada, Andhra Pradesh</option>
+                <option value="mysuru">Mysuru, Karnataka</option>
+                <option value="mangaluru">Mangaluru, Karnataka</option>
+                <option value="tiruchirappalli">Tiruchirappalli, Tamil Nadu</option>
+                <option value="salem">Salem, Tamil Nadu</option>
+                <option value="prayagraj">Prayagraj, Uttar Pradesh</option>
+                <option value="kanpur">Kanpur, Uttar Pradesh</option>
+                <option value="agra">Agra, Uttar Pradesh</option>
+                <option value="meerut">Meerut, Uttar Pradesh</option>
+                <option value="bareilly">Bareilly, Uttar Pradesh</option>
+                <option value="noida">Noida, Uttar Pradesh</option>
+                <option value="gurugram">Gurugram, Haryana</option>
+                <option value="faridabad">Faridabad, Haryana</option>
+                <option value="ghaziabad">Ghaziabad, Uttar Pradesh</option>
+                <option value="haridwar">Haridwar, Uttarakhand</option>
+                <option value="jalandhar">Jalandhar, Punjab</option>
+                <option value="patiala">Patiala, Punjab</option>
+                <option value="ajmer">Ajmer, Rajasthan</option>
+                <option value="udaipur">Udaipur, Rajasthan</option>
+                <option value="jodhpur">Jodhpur, Rajasthan</option>
+                <option value="kota">Kota, Rajasthan</option>
+                <option value="gwalior">Gwalior, Madhya Pradesh</option>
+                <option value="jabalpur">Jabalpur, Madhya Pradesh</option>
+                <option value="ujjain">Ujjain, Madhya Pradesh</option>
+                <option value="rajkot">Rajkot, Gujarat</option>
+                <option value="vadodara">Vadodara, Gujarat</option>
+                <option value="nashik">Nashik, Maharashtra</option>
+                <option value="sambhajinagar">Chhatrapati Sambhajinagar, Maharashtra</option>
+                <option value="solapur">Solapur, Maharashtra</option>
+                <option value="kolhapur">Kolhapur, Maharashtra</option>
+                <option value="thane">Thane, Maharashtra</option>
+                <option value="cuttack">Cuttack, Odisha</option>
+                <option value="durgapur">Durgapur, West Bengal</option>
+                <option value="siliguri">Siliguri, West Bengal</option>
+                <option value="asansol">Asansol, West Bengal</option>
+                <option value="jamshedpur">Jamshedpur, Jharkhand</option>
+                <option value="dhanbad">Dhanbad, Jharkhand</option>
+                <option value="bilaspur">Bilaspur, Chhattisgarh</option>
+                <option value="bhilai">Bhilai, Chhattisgarh</option>
+                <option value="warangal">Warangal, Telangana</option>
+                <option value="tirupati">Tirupati, Andhra Pradesh</option>
+                <option value="nellore">Nellore, Andhra Pradesh</option>
+                <option value="guntur">Guntur, Andhra Pradesh</option>
+                <option value="kozhikode">Kozhikode, Kerala</option>
+                <option value="thrissur">Thrissur, Kerala</option>
+                <option value="kannur">Kannur, Kerala</option>
+                <option value="kollam">Kollam, Kerala</option>
+                <option value="puducherry">Puducherry</option>
+                <option value="portblair">Port Blair, Andaman & Nicobar</option>
+                <option value="leh">Leh, Ladakh</option>
+              </optgroup>
+              <optgroup label="United States">
+                <option value="newyork">New York, NY</option>
+                <option value="losangeles">Los Angeles, CA</option>
+                <option value="chicago">Chicago, IL</option>
+                <option value="houston">Houston, TX</option>
+                <option value="dallas">Dallas, TX</option>
+                <option value="sanfrancisco">San Francisco, CA</option>
+                <option value="seattle">Seattle, WA</option>
+                <option value="atlanta">Atlanta, GA</option>
+                <option value="boston">Boston, MA</option>
+                <option value="miami">Miami, FL</option>
+                <option value="washingtondc">Washington, DC</option>
+                <option value="denver">Denver, CO</option>
+                <option value="phoenix">Phoenix, AZ</option>
+                <option value="lasvegas">Las Vegas, NV</option>
+                <option value="sandiego">San Diego, CA</option>
+                <option value="austin">Austin, TX</option>
+                <option value="philadelphia">Philadelphia, PA</option>
+                <option value="sanjose">San Jose, CA</option>
+                <option value="jacksonville">Jacksonville, FL</option>
+                <option value="columbus">Columbus, OH</option>
+                <option value="charlotte">Charlotte, NC</option>
+                <option value="indianapolis">Indianapolis, IN</option>
+                <option value="nashville">Nashville, TN</option>
+                <option value="portland">Portland, OR</option>
+                <option value="sacramento">Sacramento, CA</option>
+                <option value="sanantonio">San Antonio, TX</option>
+                <option value="fortworth">Fort Worth, TX</option>
+                <option value="elpaso">El Paso, TX</option>
+                <option value="oklahomacity">Oklahoma City, OK</option>
+                <option value="minneapolis">Minneapolis, MN</option>
+                <option value="stlouis">St. Louis, MO</option>
+                <option value="kansascity">Kansas City, MO</option>
+                <option value="neworleans">New Orleans, LA</option>
+                <option value="memphis">Memphis, TN</option>
+                <option value="baltimore">Baltimore, MD</option>
+                <option value="pittsburgh">Pittsburgh, PA</option>
+                <option value="cleveland">Cleveland, OH</option>
+                <option value="cincinnati">Cincinnati, OH</option>
+                <option value="detroit">Detroit, MI</option>
+                <option value="milwaukee">Milwaukee, WI</option>
+                <option value="saltlakecity">Salt Lake City, UT</option>
+                <option value="albuquerque">Albuquerque, NM</option>
+                <option value="tucson">Tucson, AZ</option>
+                <option value="fresno">Fresno, CA</option>
+                <option value="orlando">Orlando, FL</option>
+                <option value="tampa">Tampa, FL</option>
+                <option value="honolulu">Honolulu, HI</option>
+                <option value="anchorage">Anchorage, AK</option>
+                <option value="boise">Boise, ID</option>
+                <option value="richmond">Richmond, VA</option>
+                <option value="raleigh">Raleigh, NC</option>
+              </optgroup>
+              <optgroup label="United Kingdom & Europe">
+                <option value="london">London, UK</option>
+                <option value="birmingham">Birmingham, UK</option>
+                <option value="manchester">Manchester, UK</option>
+                <option value="dublin">Dublin, Ireland</option>
+                <option value="paris">Paris, France</option>
+                <option value="berlin">Berlin, Germany</option>
+                <option value="amsterdam">Amsterdam, Netherlands</option>
+                <option value="rome">Rome, Italy</option>
+                <option value="madrid">Madrid, Spain</option>
+                <option value="zurich">Zurich, Switzerland</option>
+                <option value="stockholm">Stockholm, Sweden</option>
+                <option value="glasgow">Glasgow, UK</option>
+                <option value="edinburgh">Edinburgh, UK</option>
+                <option value="liverpool">Liverpool, UK</option>
+                <option value="leeds">Leeds, UK</option>
+                <option value="bristol">Bristol, UK</option>
+                <option value="cardiff">Cardiff, UK</option>
+                <option value="belfast">Belfast, UK</option>
+                <option value="lisbon">Lisbon, Portugal</option>
+                <option value="porto">Porto, Portugal</option>
+                <option value="athens">Athens, Greece</option>
+                <option value="vienna">Vienna, Austria</option>
+                <option value="prague">Prague, Czechia</option>
+                <option value="warsaw">Warsaw, Poland</option>
+                <option value="budapest">Budapest, Hungary</option>
+                <option value="copenhagen">Copenhagen, Denmark</option>
+                <option value="oslo">Oslo, Norway</option>
+                <option value="helsinki">Helsinki, Finland</option>
+                <option value="brussels">Brussels, Belgium</option>
+                <option value="frankfurt">Frankfurt, Germany</option>
+                <option value="munich">Munich, Germany</option>
+                <option value="hamburg">Hamburg, Germany</option>
+                <option value="cologne">Cologne, Germany</option>
+                <option value="barcelona">Barcelona, Spain</option>
+                <option value="valencia">Valencia, Spain</option>
+                <option value="seville">Seville, Spain</option>
+                <option value="milan">Milan, Italy</option>
+                <option value="naples">Naples, Italy</option>
+                <option value="venice">Venice, Italy</option>
+                <option value="florence">Florence, Italy</option>
+                <option value="geneva">Geneva, Switzerland</option>
+                <option value="lyon">Lyon, France</option>
+                <option value="marseille">Marseille, France</option>
+                <option value="nice">Nice, France</option>
+                <option value="istanbul">Istanbul, Turkiye</option>
+                <option value="ankara">Ankara, Turkiye</option>
+                <option value="bucharest">Bucharest, Romania</option>
+                <option value="sofia">Sofia, Bulgaria</option>
+                <option value="zagreb">Zagreb, Croatia</option>
+                <option value="belgrade">Belgrade, Serbia</option>
+                <option value="kyiv">Kyiv, Ukraine</option>
+                <option value="moscow">Moscow, Russia</option>
+                <option value="saintpetersburg">St. Petersburg, Russia</option>
+                <option value="reykjavik">Reykjavik, Iceland</option>
+              </optgroup>
+              <optgroup label="Middle East">
+                <option value="dubai">Dubai, UAE</option>
+                <option value="abudhabi">Abu Dhabi, UAE</option>
+                <option value="doha">Doha, Qatar</option>
+                <option value="riyadh">Riyadh, Saudi Arabia</option>
+                <option value="jeddah">Jeddah, Saudi Arabia</option>
+                <option value="muscat">Muscat, Oman</option>
+                <option value="kuwaitcity">Kuwait City, Kuwait</option>
+                <option value="manama">Manama, Bahrain</option>
+                <option value="tehran">Tehran, Iran</option>
+                <option value="baghdad">Baghdad, Iraq</option>
+                <option value="jerusalem">Jerusalem</option>
+                <option value="telaviv">Tel Aviv, Israel</option>
+                <option value="beirut">Beirut, Lebanon</option>
+                <option value="damascus">Damascus, Syria</option>
+                <option value="sharjah">Sharjah, UAE</option>
+                <option value="mecca">Mecca, Saudi Arabia</option>
+                <option value="medina">Medina, Saudi Arabia</option>
+                <option value="dammam">Dammam, Saudi Arabia</option>
+                <option value="amman">Amman, Jordan</option>
+              </optgroup>
+              <optgroup label="Asia - Pacific">
+                <option value="karachi">Karachi, Pakistan</option>
+                <option value="lahore">Lahore, Pakistan</option>
+                <option value="islamabad">Islamabad, Pakistan</option>
+                <option value="dhaka">Dhaka, Bangladesh</option>
+                <option value="kathmandu">Kathmandu, Nepal</option>
+                <option value="colombo">Colombo, Sri Lanka</option>
+                <option value="singapore">Singapore</option>
+                <option value="kualalumpur">Kuala Lumpur, Malaysia</option>
+                <option value="bangkok">Bangkok, Thailand</option>
+                <option value="hongkong">Hong Kong</option>
+                <option value="beijing">Beijing, China</option>
+                <option value="shanghai">Shanghai, China</option>
+                <option value="tokyo">Tokyo, Japan</option>
+                <option value="sydney">Sydney, Australia</option>
+                <option value="melbourne">Melbourne, Australia</option>
+                <option value="brisbane">Brisbane, Australia</option>
+                <option value="perth">Perth, Australia</option>
+                <option value="auckland">Auckland, New Zealand</option>
+                <option value="faisalabad">Faisalabad, Pakistan</option>
+                <option value="peshawar">Peshawar, Pakistan</option>
+                <option value="quetta">Quetta, Pakistan</option>
+                <option value="multan">Multan, Pakistan</option>
+                <option value="hyderabadpk">Hyderabad, Pakistan</option>
+                <option value="chattogram">Chattogram, Bangladesh</option>
+                <option value="sylhet">Sylhet, Bangladesh</option>
+                <option value="pokhara">Pokhara, Nepal</option>
+                <option value="kandy">Kandy, Sri Lanka</option>
+                <option value="male">Male, Maldives</option>
+                <option value="thimphu">Thimphu, Bhutan</option>
+                <option value="jakarta">Jakarta, Indonesia</option>
+                <option value="surabaya">Surabaya, Indonesia</option>
+                <option value="bandung">Bandung, Indonesia</option>
+                <option value="manila">Manila, Philippines</option>
+                <option value="cebu">Cebu, Philippines</option>
+                <option value="davao">Davao, Philippines</option>
+                <option value="hanoi">Hanoi, Vietnam</option>
+                <option value="hochiminh">Ho Chi Minh City, Vietnam</option>
+                <option value="danang">Da Nang, Vietnam</option>
+                <option value="yangon">Yangon, Myanmar</option>
+                <option value="phnompenh">Phnom Penh, Cambodia</option>
+                <option value="vientiane">Vientiane, Laos</option>
+                <option value="taipei">Taipei, Taiwan</option>
+                <option value="seoul">Seoul, South Korea</option>
+                <option value="busan">Busan, South Korea</option>
+                <option value="osaka">Osaka, Japan</option>
+                <option value="kyoto">Kyoto, Japan</option>
+                <option value="nagoya">Nagoya, Japan</option>
+                <option value="sapporo">Sapporo, Japan</option>
+                <option value="guangzhou">Guangzhou, China</option>
+                <option value="shenzhen">Shenzhen, China</option>
+                <option value="chengdu">Chengdu, China</option>
+                <option value="wuhan">Wuhan, China</option>
+                <option value="xian">Xi'an, China</option>
+                <option value="ulaanbaatar">Ulaanbaatar, Mongolia</option>
+                <option value="adelaide">Adelaide, Australia</option>
+                <option value="canberra">Canberra, Australia</option>
+                <option value="hobart">Hobart, Australia</option>
+                <option value="darwin">Darwin, Australia</option>
+                <option value="goldcoast">Gold Coast, Australia</option>
+                <option value="wellington">Wellington, New Zealand</option>
+                <option value="christchurch">Christchurch, New Zealand</option>
+                <option value="suva">Suva, Fiji</option>
+              </optgroup>
+              <optgroup label="Africa">
+                <option value="cairo">Cairo, Egypt</option>
+                <option value="lagos">Lagos, Nigeria</option>
+                <option value="johannesburg">Johannesburg, South Africa</option>
+                <option value="capetown">Cape Town, South Africa</option>
+                <option value="nairobi">Nairobi, Kenya</option>
+                <option value="accra">Accra, Ghana</option>
+                <option value="addisababa">Addis Ababa, Ethiopia</option>
+                <option value="casablanca">Casablanca, Morocco</option>
+                <option value="tunis">Tunis, Tunisia</option>
+                <option value="algiers">Algiers, Algeria</option>
+                <option value="dakar">Dakar, Senegal</option>
+                <option value="abidjan">Abidjan, Ivory Coast</option>
+                <option value="kampala">Kampala, Uganda</option>
+                <option value="daressalaam">Dar es Salaam, Tanzania</option>
+                <option value="lusaka">Lusaka, Zambia</option>
+                <option value="harare">Harare, Zimbabwe</option>
+                <option value="maputo">Maputo, Mozambique</option>
+                <option value="kinshasa">Kinshasa, DR Congo</option>
+                <option value="luanda">Luanda, Angola</option>
+                <option value="windhoek">Windhoek, Namibia</option>
+                <option value="gaborone">Gaborone, Botswana</option>
+                <option value="antananarivo">Antananarivo, Madagascar</option>
+                <option value="portlouis">Port Louis, Mauritius</option>
+                <option value="khartoum">Khartoum, Sudan</option>
+                <option value="durban">Durban, South Africa</option>
+                <option value="pretoria">Pretoria, South Africa</option>
+              </optgroup>
+              <optgroup label="Latin America">
+                <option value="mexicocity">Mexico City, Mexico</option>
+                <option value="saopaulo">São Paulo, Brazil</option>
+                <option value="riodejaneiro">Rio de Janeiro, Brazil</option>
+                <option value="buenosaires">Buenos Aires, Argentina</option>
+                <option value="santiago">Santiago, Chile</option>
+                <option value="bogota">Bogotá, Colombia</option>
+                <option value="lima">Lima, Peru</option>
+                <option value="caracas">Caracas, Venezuela</option>
+                <option value="panamacity">Panama City, Panama</option>
+                <option value="sanjosecr">San Jose, Costa Rica</option>
+                <option value="havana">Havana, Cuba</option>
+                <option value="sanjuan">San Juan, Puerto Rico</option>
+                <option value="kingston">Kingston, Jamaica</option>
+                <option value="santodomingo">Santo Domingo, Dominican Republic</option>
+                <option value="quito">Quito, Ecuador</option>
+                <option value="guayaquil">Guayaquil, Ecuador</option>
+                <option value="lapaz">La Paz, Bolivia</option>
+                <option value="montevideo">Montevideo, Uruguay</option>
+                <option value="asuncion">Asuncion, Paraguay</option>
+                <option value="guatemalacity">Guatemala City, Guatemala</option>
+                <option value="tegucigalpa">Tegucigalpa, Honduras</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="custom">Custom lat / lon below</option>
+              </optgroup>
+            </select>
+          <p class="place-hint" id="placeHint">350+ major cities worldwide: Indian state capitals &amp; metros, Canada, the US, Europe, the Middle East, Asia-Pacific, Africa and Latin America. Pick “Custom lat / lon” below for any town not listed.</p>
+          </div>
         <div class="row2">
           <div><label for="lat">Latitude</label><input id="lat" type="number" step="0.0001" value="28.6139"></div>
           <div><label for="lon">Longitude</label><input id="lon" type="number" step="0.0001" value="77.2090"></div>
@@ -149,9 +522,124 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
         <select id="tz">
           <option value="Asia/Kolkata" selected>Asia/Kolkata (IST)</option>
           <option value="America/Toronto">America/Toronto (ET)</option>
+          <option value="America/Montreal">America/Montreal (ET)</option>
           <option value="America/Vancouver">America/Vancouver (PT)</option>
+          <option value="America/Edmonton">America/Edmonton (MT)</option>
+          <option value="America/Winnipeg">America/Winnipeg (CT)</option>
+          <option value="America/Halifax">America/Halifax (AT)</option>
           <option value="America/New_York">America/New_York (ET)</option>
+          <option value="America/Chicago">America/Chicago (CT)</option>
+          <option value="America/Denver">America/Denver (MT)</option>
+          <option value="America/Phoenix">America/Phoenix (MST)</option>
+          <option value="America/Los_Angeles">America/Los_Angeles (PT)</option>
           <option value="Europe/London">Europe/London</option>
+          <option value="Europe/Dublin">Europe/Dublin</option>
+          <option value="Europe/Paris">Europe/Paris</option>
+          <option value="Europe/Berlin">Europe/Berlin</option>
+          <option value="Europe/Amsterdam">Europe/Amsterdam</option>
+          <option value="Europe/Rome">Europe/Rome</option>
+          <option value="Europe/Madrid">Europe/Madrid</option>
+          <option value="Europe/Zurich">Europe/Zurich</option>
+          <option value="Europe/Stockholm">Europe/Stockholm</option>
+          <option value="Asia/Dubai">Asia/Dubai</option>
+          <option value="Asia/Qatar">Asia/Qatar</option>
+          <option value="Asia/Riyadh">Asia/Riyadh</option>
+          <option value="Asia/Muscat">Asia/Muscat</option>
+          <option value="Asia/Kuwait">Asia/Kuwait</option>
+          <option value="Asia/Bahrain">Asia/Bahrain</option>
+          <option value="Asia/Karachi">Asia/Karachi</option>
+          <option value="Asia/Dhaka">Asia/Dhaka</option>
+          <option value="Asia/Kathmandu">Asia/Kathmandu</option>
+          <option value="Asia/Colombo">Asia/Colombo</option>
+          <option value="Asia/Singapore">Asia/Singapore</option>
+          <option value="Asia/Kuala_Lumpur">Asia/Kuala_Lumpur</option>
+          <option value="Asia/Bangkok">Asia/Bangkok</option>
+          <option value="Asia/Hong_Kong">Asia/Hong_Kong</option>
+          <option value="Asia/Shanghai">Asia/Shanghai</option>
+          <option value="Asia/Tokyo">Asia/Tokyo</option>
+          <option value="Australia/Sydney">Australia/Sydney</option>
+          <option value="Australia/Melbourne">Australia/Melbourne</option>
+          <option value="Australia/Brisbane">Australia/Brisbane</option>
+          <option value="Australia/Perth">Australia/Perth</option>
+          <option value="Pacific/Auckland">Pacific/Auckland</option>
+          <option value="Africa/Cairo">Africa/Cairo</option>
+          <option value="Africa/Lagos">Africa/Lagos</option>
+          <option value="Africa/Johannesburg">Africa/Johannesburg</option>
+          <option value="Africa/Nairobi">Africa/Nairobi</option>
+          <option value="Africa/Accra">Africa/Accra</option>
+          <option value="Africa/Addis_Ababa">Africa/Addis_Ababa</option>
+          <option value="Africa/Casablanca">Africa/Casablanca</option>
+          <option value="America/Mexico_City">America/Mexico_City</option>
+          <option value="America/Sao_Paulo">America/Sao_Paulo</option>
+          <option value="America/Argentina/Buenos_Aires">America/Argentina/Buenos_Aires</option>
+          <option value="America/Santiago">America/Santiago</option>
+          <option value="America/Bogota">America/Bogota</option>
+          <option value="America/Lima">America/Lima</option>
+          <option value="America/Caracas">America/Caracas</option>
+          <option value="America/Regina">America/Regina</option>
+          <option value="America/St_Johns">America/St_Johns</option>
+          <option value="America/Moncton">America/Moncton</option>
+          <option value="America/Yellowknife">America/Yellowknife</option>
+          <option value="America/Whitehorse">America/Whitehorse</option>
+          <option value="America/Indiana/Indianapolis">America/Indiana/Indianapolis</option>
+          <option value="America/Detroit">America/Detroit</option>
+          <option value="Pacific/Honolulu">Pacific/Honolulu</option>
+          <option value="America/Anchorage">America/Anchorage</option>
+          <option value="America/Boise">America/Boise</option>
+          <option value="Europe/Lisbon">Europe/Lisbon</option>
+          <option value="Europe/Athens">Europe/Athens</option>
+          <option value="Europe/Vienna">Europe/Vienna</option>
+          <option value="Europe/Prague">Europe/Prague</option>
+          <option value="Europe/Warsaw">Europe/Warsaw</option>
+          <option value="Europe/Budapest">Europe/Budapest</option>
+          <option value="Europe/Copenhagen">Europe/Copenhagen</option>
+          <option value="Europe/Oslo">Europe/Oslo</option>
+          <option value="Europe/Helsinki">Europe/Helsinki</option>
+          <option value="Europe/Brussels">Europe/Brussels</option>
+          <option value="Europe/Istanbul">Europe/Istanbul</option>
+          <option value="Europe/Bucharest">Europe/Bucharest</option>
+          <option value="Europe/Sofia">Europe/Sofia</option>
+          <option value="Europe/Zagreb">Europe/Zagreb</option>
+          <option value="Europe/Belgrade">Europe/Belgrade</option>
+          <option value="Europe/Kyiv">Europe/Kyiv</option>
+          <option value="Europe/Moscow">Europe/Moscow</option>
+          <option value="Atlantic/Reykjavik">Atlantic/Reykjavik</option>
+          <option value="Asia/Tehran">Asia/Tehran</option>
+          <option value="Asia/Baghdad">Asia/Baghdad</option>
+          <option value="Asia/Jerusalem">Asia/Jerusalem</option>
+          <option value="Asia/Beirut">Asia/Beirut</option>
+          <option value="Asia/Damascus">Asia/Damascus</option>
+          <option value="Asia/Amman">Asia/Amman</option>
+          <option value="Indian/Maldives">Indian/Maldives</option>
+          <option value="Asia/Thimphu">Asia/Thimphu</option>
+          <option value="Asia/Jakarta">Asia/Jakarta</option>
+          <option value="Asia/Manila">Asia/Manila</option>
+          <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh</option>
+          <option value="Asia/Yangon">Asia/Yangon</option>
+          <option value="Asia/Phnom_Penh">Asia/Phnom_Penh</option>
+          <option value="Asia/Vientiane">Asia/Vientiane</option>
+          <option value="Asia/Taipei">Asia/Taipei</option>
+          <option value="Asia/Seoul">Asia/Seoul</option>
+          <option value="Asia/Ulaanbaatar">Asia/Ulaanbaatar</option>
+          <option value="Australia/Adelaide">Australia/Adelaide</option>
+          <option value="Australia/Hobart">Australia/Hobart</option>
+          <option value="Australia/Darwin">Australia/Darwin</option>
+          <option value="Pacific/Fiji">Pacific/Fiji</option>
+          <option value="Africa/Tunis">Africa/Tunis</option>
+          <option value="Africa/Algiers">Africa/Algiers</option>
+          <option value="Africa/Dakar">Africa/Dakar</option>
+          <option value="Africa/Abidjan">Africa/Abidjan</option>
+          <option value="Indian/Mauritius">Indian/Mauritius</option>
+          <option value="Africa/Khartoum">Africa/Khartoum</option>
+          <option value="America/Panama">America/Panama</option>
+          <option value="America/Costa_Rica">America/Costa_Rica</option>
+          <option value="America/Havana">America/Havana</option>
+          <option value="America/Puerto_Rico">America/Puerto_Rico</option>
+          <option value="America/Jamaica">America/Jamaica</option>
+          <option value="America/Guayaquil">America/Guayaquil</option>
+          <option value="America/La_Paz">America/La_Paz</option>
+          <option value="America/Montevideo">America/Montevideo</option>
+          <option value="America/Asuncion">America/Asuncion</option>
           <option value="UTC">UTC</option>
         </select>
         <button class="btn orange" id="calcBtn">Calculate my chart →</button>
@@ -337,7 +825,264 @@ var SIGNS=[['Aries','Mesha','Ar'],['Taurus','Vrishabha','Ta'],['Gemini','Mithuna
 var NAK=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 function nak(degSid){ var idx=Math.floor(degSid/(360/27)); var pada=Math.floor((degSid%(360/27))/(360/108))+1; return NAK[idx]+' pada '+pada; }
 function fmtDeg(d){ var dd=Math.floor(d), mm=Math.floor((d-dd)*60); return dd+'°'+String(mm).padStart(2,'0')+"'"; }
-var PLACES={mississauga:{lat:43.5890,lon:-79.6441,tz:'America/Toronto'},toronto:{lat:43.6532,lon:-79.3832,tz:'America/Toronto'},delhi:{lat:28.6139,lon:77.2090,tz:'Asia/Kolkata'},mumbai:{lat:19.0760,lon:72.8777,tz:'Asia/Kolkata'},bangalore:{lat:12.9716,lon:77.5946,tz:'Asia/Kolkata'},chennai:{lat:13.0827,lon:80.2707,tz:'Asia/Kolkata'},kolkata:{lat:22.5726,lon:88.3639,tz:'Asia/Kolkata'},kochi:{lat:9.9312,lon:76.2673,tz:'Asia/Kolkata'}};
+var PLACES={
+mississauga:{lat:43.5890,lon:-79.6441,tz:'America/Toronto'},toronto:{lat:43.6532,lon:-79.3832,tz:'America/Toronto'},brampton:{lat:43.7315,lon:-79.7624,tz:'America/Toronto'},hamilton:{lat:43.2557,lon:-79.8711,tz:'America/Toronto'},ottawa:{lat:45.4215,lon:-75.6972,tz:'America/Toronto'},montreal:{lat:45.5017,lon:-73.5673,tz:'America/Montreal'},vancouver:{lat:49.2827,lon:-123.1207,tz:'America/Vancouver'},calgary:{lat:51.0447,lon:-114.0719,tz:'America/Edmonton'},edmonton:{lat:53.5461,lon:-113.4938,tz:'America/Edmonton'},winnipeg:{lat:49.8951,lon:-97.1384,tz:'America/Winnipeg'},halifax:{lat:44.6488,lon:-63.5752,tz:'America/Halifax'},
+delhi:{lat:28.6139,lon:77.2090,tz:'Asia/Kolkata'},mumbai:{lat:19.0760,lon:72.8777,tz:'Asia/Kolkata'},bangalore:{lat:12.9716,lon:77.5946,tz:'Asia/Kolkata'},chennai:{lat:13.0827,lon:80.2707,tz:'Asia/Kolkata'},kolkata:{lat:22.5726,lon:88.3639,tz:'Asia/Kolkata'},hyderabad:{lat:17.3850,lon:78.4867,tz:'Asia/Kolkata'},pune:{lat:18.5204,lon:73.8567,tz:'Asia/Kolkata'},ahmedabad:{lat:23.0225,lon:72.5714,tz:'Asia/Kolkata'},jaipur:{lat:26.9124,lon:75.7873,tz:'Asia/Kolkata'},lucknow:{lat:26.8467,lon:80.9462,tz:'Asia/Kolkata'},chandigarh:{lat:30.7333,lon:76.7794,tz:'Asia/Kolkata'},indore:{lat:22.7196,lon:75.8577,tz:'Asia/Kolkata'},surat:{lat:21.1702,lon:72.8311,tz:'Asia/Kolkata'},patna:{lat:25.5941,lon:85.1376,tz:'Asia/Kolkata'},varanasi:{lat:25.3176,lon:82.9739,tz:'Asia/Kolkata'},amritsar:{lat:31.6340,lon:74.8723,tz:'Asia/Kolkata'},ludhiana:{lat:30.9010,lon:75.8573,tz:'Asia/Kolkata'},kochi:{lat:9.9312,lon:76.2673,tz:'Asia/Kolkata'},thiruvananthapuram:{lat:8.5241,lon:76.9366,tz:'Asia/Kolkata'},coimbatore:{lat:11.0168,lon:76.9558,tz:'Asia/Kolkata'},madurai:{lat:9.9252,lon:78.1198,tz:'Asia/Kolkata'},bhubaneswar:{lat:20.2961,lon:85.8245,tz:'Asia/Kolkata'},guwahati:{lat:26.1445,lon:91.7362,tz:'Asia/Kolkata'},nagpur:{lat:21.1458,lon:79.0882,tz:'Asia/Kolkata'},visakhapatnam:{lat:17.6868,lon:83.2185,tz:'Asia/Kolkata'},
+newyork:{lat:40.7128,lon:-74.0060,tz:'America/New_York'},losangeles:{lat:34.0522,lon:-118.2437,tz:'America/Los_Angeles'},chicago:{lat:41.8781,lon:-87.6298,tz:'America/Chicago'},houston:{lat:29.7604,lon:-95.3698,tz:'America/Chicago'},dallas:{lat:32.7767,lon:-96.7970,tz:'America/Chicago'},sanfrancisco:{lat:37.7749,lon:-122.4194,tz:'America/Los_Angeles'},seattle:{lat:47.6062,lon:-122.3321,tz:'America/Los_Angeles'},atlanta:{lat:33.7490,lon:-84.3880,tz:'America/New_York'},boston:{lat:42.3601,lon:-71.0589,tz:'America/New_York'},miami:{lat:25.7617,lon:-80.1918,tz:'America/New_York'},washingtondc:{lat:38.9072,lon:-77.0369,tz:'America/New_York'},denver:{lat:39.7392,lon:-104.9903,tz:'America/Denver'},phoenix:{lat:33.4484,lon:-112.0740,tz:'America/Phoenix'},lasvegas:{lat:36.1699,lon:-115.1398,tz:'America/Los_Angeles'},sandiego:{lat:32.7157,lon:-117.1611,tz:'America/Los_Angeles'},austin:{lat:30.2672,lon:-97.7431,tz:'America/Chicago'},
+london:{lat:51.5074,lon:-0.1278,tz:'Europe/London'},birmingham:{lat:52.4800,lon:-1.8904,tz:'Europe/London'},manchester:{lat:53.4808,lon:-2.2426,tz:'Europe/London'},dublin:{lat:53.3498,lon:-6.2603,tz:'Europe/Dublin'},paris:{lat:48.8566,lon:2.3522,tz:'Europe/Paris'},berlin:{lat:52.5200,lon:13.4050,tz:'Europe/Berlin'},amsterdam:{lat:52.3676,lon:4.9041,tz:'Europe/Amsterdam'},rome:{lat:41.9028,lon:12.4964,tz:'Europe/Rome'},madrid:{lat:40.4168,lon:-3.7038,tz:'Europe/Madrid'},zurich:{lat:47.3769,lon:8.5417,tz:'Europe/Zurich'},stockholm:{lat:59.3293,lon:18.0686,tz:'Europe/Stockholm'},
+dubai:{lat:25.2048,lon:55.2708,tz:'Asia/Dubai'},abudhabi:{lat:24.4539,lon:54.3773,tz:'Asia/Dubai'},doha:{lat:25.2854,lon:51.5310,tz:'Asia/Qatar'},riyadh:{lat:24.7136,lon:46.6753,tz:'Asia/Riyadh'},jeddah:{lat:21.4858,lon:39.1925,tz:'Asia/Riyadh'},muscat:{lat:23.5880,lon:58.3829,tz:'Asia/Muscat'},kuwaitcity:{lat:29.3759,lon:47.9774,tz:'Asia/Kuwait'},manama:{lat:26.2285,lon:50.5860,tz:'Asia/Bahrain'},
+karachi:{lat:24.8607,lon:67.0011,tz:'Asia/Karachi'},lahore:{lat:31.5804,lon:74.3587,tz:'Asia/Karachi'},islamabad:{lat:33.7294,lon:73.0931,tz:'Asia/Karachi'},dhaka:{lat:23.8103,lon:90.4125,tz:'Asia/Dhaka'},kathmandu:{lat:27.7172,lon:85.3240,tz:'Asia/Kathmandu'},colombo:{lat:6.9271,lon:79.8612,tz:'Asia/Colombo'},singapore:{lat:1.3521,lon:103.8198,tz:'Asia/Singapore'},kualalumpur:{lat:3.1390,lon:101.6869,tz:'Asia/Kuala_Lumpur'},bangkok:{lat:13.7563,lon:100.5018,tz:'Asia/Bangkok'},hongkong:{lat:22.3193,lon:114.1694,tz:'Asia/Hong_Kong'},beijing:{lat:39.9042,lon:116.4074,tz:'Asia/Shanghai'},shanghai:{lat:31.2304,lon:121.4737,tz:'Asia/Shanghai'},tokyo:{lat:35.6762,lon:139.6503,tz:'Asia/Tokyo'},sydney:{lat:-33.8688,lon:151.2093,tz:'Australia/Sydney'},melbourne:{lat:-37.8136,lon:144.9631,tz:'Australia/Melbourne'},brisbane:{lat:-27.4698,lon:153.0251,tz:'Australia/Brisbane'},perth:{lat:-31.9505,lon:115.8605,tz:'Australia/Perth'},auckland:{lat:-36.8485,lon:174.7633,tz:'Pacific/Auckland'},
+cairo:{lat:30.0444,lon:31.2357,tz:'Africa/Cairo'},lagos:{lat:6.5244,lon:3.3792,tz:'Africa/Lagos'},johannesburg:{lat:-26.2041,lon:28.0473,tz:'Africa/Johannesburg'},capetown:{lat:-33.9249,lon:18.4241,tz:'Africa/Johannesburg'},nairobi:{lat:-1.2921,lon:36.8219,tz:'Africa/Nairobi'},accra:{lat:5.6037,lon:-0.1870,tz:'Africa/Accra'},addisababa:{lat:8.9806,lon:38.7578,tz:'Africa/Addis_Ababa'},casablanca:{lat:33.5731,lon:-7.5898,tz:'Africa/Casablanca'},
+mexicocity:{lat:19.4326,lon:-99.1332,tz:'America/Mexico_City'},saopaulo:{lat:-23.5505,lon:-46.6333,tz:'America/Sao_Paulo'},riodejaneiro:{lat:-22.9068,lon:-43.1729,tz:'America/Sao_Paulo'},buenosaires:{lat:-34.6037,lon:-58.3816,tz:'America/Argentina/Buenos_Aires'},santiago:{lat:-33.4489,lon:-70.6693,tz:'America/Santiago'},bogota:{lat:4.7109,lon:-74.0721,tz:'America/Bogota'},lima:{lat:-12.0464,lon:-77.0428,tz:'America/Lima'},caracas:{lat:10.4806,lon:-66.9036,tz:'America/Caracas'},
+victoria:{lat:48.4284,lon:-123.3656,tz:'America/Vancouver'},
+kelowna:{lat:49.888,lon:-119.496,tz:'America/Vancouver'},
+regina:{lat:50.4452,lon:-104.6189,tz:'America/Regina'},
+saskatoon:{lat:52.1332,lon:-106.67,tz:'America/Regina'},
+quebeccity:{lat:46.8139,lon:-71.208,tz:'America/Toronto'},
+gatineau:{lat:45.4765,lon:-75.7013,tz:'America/Toronto'},
+londonon:{lat:42.9849,lon:-81.2453,tz:'America/Toronto'},
+kitchener:{lat:43.4516,lon:-80.4925,tz:'America/Toronto'},
+markham:{lat:43.8561,lon:-79.337,tz:'America/Toronto'},
+vaughan:{lat:43.8361,lon:-79.4985,tz:'America/Toronto'},
+windsor:{lat:42.3149,lon:-83.0364,tz:'America/Toronto'},
+stjohns:{lat:47.5615,lon:-52.7126,tz:'America/St_Johns'},
+charlottetown:{lat:46.2382,lon:-63.1311,tz:'America/Halifax'},
+fredericton:{lat:45.9636,lon:-66.6431,tz:'America/Moncton'},
+moncton:{lat:46.0878,lon:-64.7782,tz:'America/Moncton'},
+yellowknife:{lat:62.454,lon:-114.3718,tz:'America/Yellowknife'},
+whitehorse:{lat:60.7212,lon:-135.0538,tz:'America/Whitehorse'},
+surrey:{lat:49.1913,lon:-122.849,tz:'America/Vancouver'},
+burnaby:{lat:49.2488,lon:-122.9805,tz:'America/Vancouver'},
+bhopal:{lat:23.2599,lon:77.4126,tz:'Asia/Kolkata'},
+raipur:{lat:21.2514,lon:81.6296,tz:'Asia/Kolkata'},
+ranchi:{lat:23.3441,lon:85.3096,tz:'Asia/Kolkata'},
+panaji:{lat:15.4909,lon:73.8278,tz:'Asia/Kolkata'},
+dehradun:{lat:30.3165,lon:78.0322,tz:'Asia/Kolkata'},
+shimla:{lat:31.1048,lon:77.1734,tz:'Asia/Kolkata'},
+srinagar:{lat:34.0837,lon:74.7973,tz:'Asia/Kolkata'},
+gangtok:{lat:27.3389,lon:88.6065,tz:'Asia/Kolkata'},
+imphal:{lat:24.817,lon:93.9368,tz:'Asia/Kolkata'},
+aizawl:{lat:23.7307,lon:92.7173,tz:'Asia/Kolkata'},
+kohima:{lat:25.6751,lon:94.1086,tz:'Asia/Kolkata'},
+itanagar:{lat:27.0844,lon:93.6053,tz:'Asia/Kolkata'},
+shillong:{lat:25.5788,lon:91.8933,tz:'Asia/Kolkata'},
+agartala:{lat:23.8315,lon:91.2868,tz:'Asia/Kolkata'},
+gandhinagar:{lat:23.2232,lon:72.65,tz:'Asia/Kolkata'},
+vijayawada:{lat:16.5062,lon:80.648,tz:'Asia/Kolkata'},
+mysuru:{lat:12.2958,lon:76.6394,tz:'Asia/Kolkata'},
+mangaluru:{lat:12.9141,lon:74.856,tz:'Asia/Kolkata'},
+tiruchirappalli:{lat:10.7905,lon:78.7047,tz:'Asia/Kolkata'},
+salem:{lat:11.6643,lon:78.146,tz:'Asia/Kolkata'},
+prayagraj:{lat:25.4358,lon:81.8463,tz:'Asia/Kolkata'},
+kanpur:{lat:26.4499,lon:80.3319,tz:'Asia/Kolkata'},
+agra:{lat:27.1767,lon:78.0081,tz:'Asia/Kolkata'},
+meerut:{lat:28.9845,lon:77.7064,tz:'Asia/Kolkata'},
+bareilly:{lat:28.367,lon:79.4304,tz:'Asia/Kolkata'},
+noida:{lat:28.5355,lon:77.391,tz:'Asia/Kolkata'},
+gurugram:{lat:28.4595,lon:77.0266,tz:'Asia/Kolkata'},
+faridabad:{lat:28.4089,lon:77.3178,tz:'Asia/Kolkata'},
+ghaziabad:{lat:28.6692,lon:77.4538,tz:'Asia/Kolkata'},
+haridwar:{lat:29.9457,lon:78.1642,tz:'Asia/Kolkata'},
+jalandhar:{lat:31.326,lon:75.5762,tz:'Asia/Kolkata'},
+patiala:{lat:30.3398,lon:76.3869,tz:'Asia/Kolkata'},
+ajmer:{lat:26.4499,lon:74.6399,tz:'Asia/Kolkata'},
+udaipur:{lat:24.5854,lon:73.7125,tz:'Asia/Kolkata'},
+jodhpur:{lat:26.2389,lon:73.0243,tz:'Asia/Kolkata'},
+kota:{lat:25.2138,lon:75.8648,tz:'Asia/Kolkata'},
+gwalior:{lat:26.2183,lon:78.1828,tz:'Asia/Kolkata'},
+jabalpur:{lat:23.1815,lon:79.9864,tz:'Asia/Kolkata'},
+ujjain:{lat:23.1765,lon:75.7885,tz:'Asia/Kolkata'},
+rajkot:{lat:22.3039,lon:70.8022,tz:'Asia/Kolkata'},
+vadodara:{lat:22.3072,lon:73.1812,tz:'Asia/Kolkata'},
+nashik:{lat:19.9975,lon:73.7898,tz:'Asia/Kolkata'},
+sambhajinagar:{lat:19.8762,lon:75.3433,tz:'Asia/Kolkata'},
+solapur:{lat:17.6599,lon:74.9064,tz:'Asia/Kolkata'},
+kolhapur:{lat:16.705,lon:74.2433,tz:'Asia/Kolkata'},
+thane:{lat:19.2183,lon:72.9781,tz:'Asia/Kolkata'},
+cuttack:{lat:20.4625,lon:85.883,tz:'Asia/Kolkata'},
+durgapur:{lat:23.5204,lon:87.3119,tz:'Asia/Kolkata'},
+siliguri:{lat:26.7271,lon:88.3953,tz:'Asia/Kolkata'},
+asansol:{lat:23.6739,lon:86.9524,tz:'Asia/Kolkata'},
+jamshedpur:{lat:22.8046,lon:86.2029,tz:'Asia/Kolkata'},
+dhanbad:{lat:23.7957,lon:86.4304,tz:'Asia/Kolkata'},
+bilaspur:{lat:22.0797,lon:82.1409,tz:'Asia/Kolkata'},
+bhilai:{lat:21.1938,lon:81.3509,tz:'Asia/Kolkata'},
+warangal:{lat:18.0059,lon:79.5582,tz:'Asia/Kolkata'},
+tirupati:{lat:13.6288,lon:79.4192,tz:'Asia/Kolkata'},
+nellore:{lat:14.4426,lon:79.9865,tz:'Asia/Kolkata'},
+guntur:{lat:16.3067,lon:80.4365,tz:'Asia/Kolkata'},
+kozhikode:{lat:11.2588,lon:75.7804,tz:'Asia/Kolkata'},
+thrissur:{lat:10.5276,lon:76.2144,tz:'Asia/Kolkata'},
+kannur:{lat:11.8745,lon:75.3704,tz:'Asia/Kolkata'},
+kollam:{lat:8.8932,lon:76.6141,tz:'Asia/Kolkata'},
+puducherry:{lat:11.9416,lon:79.8083,tz:'Asia/Kolkata'},
+portblair:{lat:11.6234,lon:92.7265,tz:'Asia/Kolkata'},
+leh:{lat:34.1526,lon:77.5771,tz:'Asia/Kolkata'},
+philadelphia:{lat:39.9526,lon:-75.1652,tz:'America/New_York'},
+sanjose:{lat:37.3387,lon:-121.8853,tz:'America/Los_Angeles'},
+jacksonville:{lat:30.3322,lon:-81.6557,tz:'America/New_York'},
+columbus:{lat:39.9612,lon:-82.9988,tz:'America/New_York'},
+charlotte:{lat:35.2271,lon:-80.8431,tz:'America/New_York'},
+indianapolis:{lat:39.7684,lon:-86.1581,tz:'America/Indiana/Indianapolis'},
+nashville:{lat:36.1627,lon:-86.7816,tz:'America/Chicago'},
+portland:{lat:45.5152,lon:-122.6784,tz:'America/Los_Angeles'},
+sacramento:{lat:38.5816,lon:-121.4944,tz:'America/Los_Angeles'},
+sanantonio:{lat:29.4241,lon:-98.4936,tz:'America/Chicago'},
+fortworth:{lat:32.7555,lon:-97.3308,tz:'America/Chicago'},
+elpaso:{lat:31.7619,lon:-106.485,tz:'America/Denver'},
+oklahomacity:{lat:35.4676,lon:-97.5164,tz:'America/Chicago'},
+minneapolis:{lat:44.9778,lon:-93.265,tz:'America/Chicago'},
+stlouis:{lat:38.627,lon:-90.1994,tz:'America/Chicago'},
+kansascity:{lat:39.0997,lon:-94.5786,tz:'America/Chicago'},
+neworleans:{lat:29.9511,lon:-90.0715,tz:'America/Chicago'},
+memphis:{lat:35.1495,lon:-90.049,tz:'America/Chicago'},
+baltimore:{lat:39.2904,lon:-76.6122,tz:'America/New_York'},
+pittsburgh:{lat:40.4406,lon:-79.9959,tz:'America/New_York'},
+cleveland:{lat:41.4993,lon:-81.6944,tz:'America/New_York'},
+cincinnati:{lat:39.1031,lon:-84.512,tz:'America/New_York'},
+detroit:{lat:42.3314,lon:-83.0458,tz:'America/Detroit'},
+milwaukee:{lat:43.0389,lon:-87.9065,tz:'America/Chicago'},
+saltlakecity:{lat:40.7608,lon:-111.891,tz:'America/Denver'},
+albuquerque:{lat:35.0844,lon:-106.6504,tz:'America/Denver'},
+tucson:{lat:32.2217,lon:-110.9265,tz:'America/Phoenix'},
+fresno:{lat:36.7378,lon:-119.7871,tz:'America/Los_Angeles'},
+orlando:{lat:28.5383,lon:-81.3792,tz:'America/New_York'},
+tampa:{lat:27.9506,lon:-82.4572,tz:'America/New_York'},
+honolulu:{lat:21.3099,lon:-157.8581,tz:'Pacific/Honolulu'},
+anchorage:{lat:61.2181,lon:-149.9003,tz:'America/Anchorage'},
+boise:{lat:43.615,lon:-116.2023,tz:'America/Boise'},
+richmond:{lat:37.5407,lon:-77.436,tz:'America/New_York'},
+raleigh:{lat:35.7796,lon:-78.6382,tz:'America/New_York'},
+glasgow:{lat:55.8642,lon:-4.2518,tz:'Europe/London'},
+edinburgh:{lat:55.9533,lon:-3.1883,tz:'Europe/London'},
+liverpool:{lat:53.4084,lon:-2.9916,tz:'Europe/London'},
+leeds:{lat:53.8008,lon:-1.5491,tz:'Europe/London'},
+bristol:{lat:51.4545,lon:-2.5879,tz:'Europe/London'},
+cardiff:{lat:51.4816,lon:-3.1791,tz:'Europe/London'},
+belfast:{lat:54.5973,lon:-5.9301,tz:'Europe/London'},
+lisbon:{lat:38.7223,lon:-9.1393,tz:'Europe/Lisbon'},
+porto:{lat:41.1579,lon:-8.6291,tz:'Europe/Lisbon'},
+athens:{lat:37.9838,lon:23.7275,tz:'Europe/Athens'},
+vienna:{lat:48.2082,lon:16.3738,tz:'Europe/Vienna'},
+prague:{lat:50.0755,lon:14.4378,tz:'Europe/Prague'},
+warsaw:{lat:52.2297,lon:21.0122,tz:'Europe/Warsaw'},
+budapest:{lat:47.4979,lon:19.0402,tz:'Europe/Budapest'},
+copenhagen:{lat:55.6761,lon:12.5683,tz:'Europe/Copenhagen'},
+oslo:{lat:59.9139,lon:10.7522,tz:'Europe/Oslo'},
+helsinki:{lat:60.1699,lon:24.9384,tz:'Europe/Helsinki'},
+brussels:{lat:50.8503,lon:4.3517,tz:'Europe/Brussels'},
+frankfurt:{lat:50.1109,lon:8.6821,tz:'Europe/Berlin'},
+munich:{lat:48.1351,lon:11.582,tz:'Europe/Berlin'},
+hamburg:{lat:53.5511,lon:9.9937,tz:'Europe/Berlin'},
+cologne:{lat:50.9375,lon:6.9603,tz:'Europe/Berlin'},
+barcelona:{lat:41.3874,lon:2.1686,tz:'Europe/Madrid'},
+valencia:{lat:39.4699,lon:-0.3763,tz:'Europe/Madrid'},
+seville:{lat:37.3891,lon:-5.9845,tz:'Europe/Madrid'},
+milan:{lat:45.4642,lon:9.19,tz:'Europe/Rome'},
+naples:{lat:40.8518,lon:14.2681,tz:'Europe/Rome'},
+venice:{lat:45.4408,lon:12.3155,tz:'Europe/Rome'},
+florence:{lat:43.7696,lon:11.2558,tz:'Europe/Rome'},
+geneva:{lat:46.2044,lon:6.1432,tz:'Europe/Zurich'},
+lyon:{lat:45.764,lon:4.8357,tz:'Europe/Paris'},
+marseille:{lat:43.2965,lon:5.3698,tz:'Europe/Paris'},
+nice:{lat:43.7102,lon:7.262,tz:'Europe/Paris'},
+istanbul:{lat:41.0082,lon:28.9784,tz:'Europe/Istanbul'},
+ankara:{lat:39.9334,lon:32.8597,tz:'Europe/Istanbul'},
+bucharest:{lat:44.4268,lon:26.1025,tz:'Europe/Bucharest'},
+sofia:{lat:42.6977,lon:23.3219,tz:'Europe/Sofia'},
+zagreb:{lat:45.815,lon:15.9819,tz:'Europe/Zagreb'},
+belgrade:{lat:44.8176,lon:20.4633,tz:'Europe/Belgrade'},
+kyiv:{lat:50.4501,lon:30.5234,tz:'Europe/Kyiv'},
+moscow:{lat:55.7558,lon:37.6173,tz:'Europe/Moscow'},
+saintpetersburg:{lat:59.9311,lon:30.3609,tz:'Europe/Moscow'},
+reykjavik:{lat:64.1466,lon:-21.9426,tz:'Atlantic/Reykjavik'},
+tehran:{lat:35.6892,lon:51.389,tz:'Asia/Tehran'},
+baghdad:{lat:33.3152,lon:44.3661,tz:'Asia/Baghdad'},
+jerusalem:{lat:31.7683,lon:35.2137,tz:'Asia/Jerusalem'},
+telaviv:{lat:32.0853,lon:34.7818,tz:'Asia/Jerusalem'},
+beirut:{lat:33.8938,lon:35.5018,tz:'Asia/Beirut'},
+damascus:{lat:33.5138,lon:36.2765,tz:'Asia/Damascus'},
+sharjah:{lat:25.3463,lon:55.4209,tz:'Asia/Dubai'},
+mecca:{lat:21.3891,lon:39.8579,tz:'Asia/Riyadh'},
+medina:{lat:24.5247,lon:39.5692,tz:'Asia/Riyadh'},
+dammam:{lat:26.4207,lon:50.0888,tz:'Asia/Riyadh'},
+amman:{lat:31.9454,lon:35.9284,tz:'Asia/Amman'},
+faisalabad:{lat:31.4504,lon:73.135,tz:'Asia/Karachi'},
+peshawar:{lat:34.0151,lon:71.5249,tz:'Asia/Karachi'},
+quetta:{lat:30.1798,lon:66.975,tz:'Asia/Karachi'},
+multan:{lat:30.1575,lon:71.5249,tz:'Asia/Karachi'},
+hyderabadpk:{lat:25.396,lon:68.3578,tz:'Asia/Karachi'},
+chattogram:{lat:22.3569,lon:91.7832,tz:'Asia/Dhaka'},
+sylhet:{lat:24.9045,lon:91.8611,tz:'Asia/Dhaka'},
+pokhara:{lat:28.2096,lon:83.9856,tz:'Asia/Kathmandu'},
+kandy:{lat:7.2906,lon:80.6337,tz:'Asia/Colombo'},
+male:{lat:4.1755,lon:73.5093,tz:'Indian/Maldives'},
+thimphu:{lat:27.4728,lon:89.6393,tz:'Asia/Thimphu'},
+jakarta:{lat:-6.2088,lon:106.8456,tz:'Asia/Jakarta'},
+surabaya:{lat:-7.2575,lon:112.7521,tz:'Asia/Jakarta'},
+bandung:{lat:-6.9175,lon:107.6191,tz:'Asia/Jakarta'},
+manila:{lat:14.5995,lon:120.9842,tz:'Asia/Manila'},
+cebu:{lat:10.3157,lon:123.8854,tz:'Asia/Manila'},
+davao:{lat:7.1907,lon:125.4553,tz:'Asia/Manila'},
+hanoi:{lat:21.0285,lon:105.8542,tz:'Asia/Ho_Chi_Minh'},
+hochiminh:{lat:10.8231,lon:106.6297,tz:'Asia/Ho_Chi_Minh'},
+danang:{lat:16.0544,lon:108.2022,tz:'Asia/Ho_Chi_Minh'},
+yangon:{lat:16.8409,lon:96.1735,tz:'Asia/Yangon'},
+phnompenh:{lat:11.5449,lon:104.8922,tz:'Asia/Phnom_Penh'},
+vientiane:{lat:17.9757,lon:102.5687,tz:'Asia/Vientiane'},
+taipei:{lat:25.033,lon:121.5654,tz:'Asia/Taipei'},
+seoul:{lat:37.5665,lon:126.978,tz:'Asia/Seoul'},
+busan:{lat:35.1796,lon:129.0756,tz:'Asia/Seoul'},
+osaka:{lat:34.6937,lon:135.5023,tz:'Asia/Tokyo'},
+kyoto:{lat:35.0116,lon:135.7681,tz:'Asia/Tokyo'},
+nagoya:{lat:35.1815,lon:137.9066,tz:'Asia/Tokyo'},
+sapporo:{lat:43.0618,lon:141.3545,tz:'Asia/Tokyo'},
+guangzhou:{lat:23.1291,lon:113.2644,tz:'Asia/Shanghai'},
+shenzhen:{lat:22.5431,lon:114.0579,tz:'Asia/Shanghai'},
+chengdu:{lat:30.5728,lon:104.0668,tz:'Asia/Shanghai'},
+wuhan:{lat:30.5928,lon:114.3055,tz:'Asia/Shanghai'},
+xian:{lat:34.3416,lon:108.9398,tz:'Asia/Shanghai'},
+ulaanbaatar:{lat:47.8864,lon:106.9057,tz:'Asia/Ulaanbaatar'},
+adelaide:{lat:-34.9285,lon:138.6007,tz:'Australia/Adelaide'},
+canberra:{lat:-35.2809,lon:149.13,tz:'Australia/Sydney'},
+hobart:{lat:-42.8821,lon:147.3272,tz:'Australia/Hobart'},
+darwin:{lat:-12.4634,lon:130.8456,tz:'Australia/Darwin'},
+goldcoast:{lat:-28.0167,lon:153.4,tz:'Australia/Brisbane'},
+wellington:{lat:-41.2865,lon:174.7762,tz:'Pacific/Auckland'},
+christchurch:{lat:-43.5321,lon:172.6362,tz:'Pacific/Auckland'},
+suva:{lat:-18.1248,lon:178.4501,tz:'Pacific/Fiji'},
+tunis:{lat:36.8065,lon:10.1815,tz:'Africa/Tunis'},
+algiers:{lat:36.7538,lon:3.0588,tz:'Africa/Algiers'},
+dakar:{lat:14.7167,lon:-17.4677,tz:'Africa/Dakar'},
+abidjan:{lat:5.36,lon:-4.0083,tz:'Africa/Abidjan'},
+kampala:{lat:0.3476,lon:32.5825,tz:'Africa/Nairobi'},
+daressalaam:{lat:-6.7924,lon:39.2083,tz:'Africa/Nairobi'},
+lusaka:{lat:-15.3875,lon:28.3228,tz:'Africa/Johannesburg'},
+harare:{lat:-17.8252,lon:31.0335,tz:'Africa/Johannesburg'},
+maputo:{lat:-25.9692,lon:32.5732,tz:'Africa/Johannesburg'},
+kinshasa:{lat:-4.4419,lon:15.2663,tz:'Africa/Lagos'},
+luanda:{lat:-8.839,lon:13.2894,tz:'Africa/Lagos'},
+windhoek:{lat:-22.5609,lon:17.0658,tz:'Africa/Johannesburg'},
+gaborone:{lat:-24.6282,lon:25.9231,tz:'Africa/Johannesburg'},
+antananarivo:{lat:-18.9137,lon:47.5361,tz:'Africa/Nairobi'},
+portlouis:{lat:-20.1609,lon:57.5012,tz:'Indian/Mauritius'},
+khartoum:{lat:15.5007,lon:32.5599,tz:'Africa/Khartoum'},
+durban:{lat:-29.8587,lon:31.0218,tz:'Africa/Johannesburg'},
+pretoria:{lat:-25.7479,lon:28.2293,tz:'Africa/Johannesburg'},
+panamacity:{lat:8.9824,lon:-79.5199,tz:'America/Panama'},
+sanjosecr:{lat:9.9281,lon:-84.0907,tz:'America/Costa_Rica'},
+havana:{lat:23.1136,lon:-82.3666,tz:'America/Havana'},
+sanjuan:{lat:18.4655,lon:-66.1057,tz:'America/Puerto_Rico'},
+kingston:{lat:17.9712,lon:-76.7936,tz:'America/Jamaica'},
+santodomingo:{lat:18.4861,lon:-69.9312,tz:'America/Puerto_Rico'},
+quito:{lat:-0.1807,lon:-78.4678,tz:'America/Guayaquil'},
+guayaquil:{lat:-2.1705,lon:-79.9224,tz:'America/Guayaquil'},
+lapaz:{lat:-16.4897,lon:-68.1193,tz:'America/La_Paz'},
+montevideo:{lat:-34.9011,lon:-56.1645,tz:'America/Montevideo'},
+asuncion:{lat:-25.2637,lon:-57.5759,tz:'America/Asuncion'},
+guatemalacity:{lat:14.6349,lon:-90.5069,tz:'America/Costa_Rica'},
+tegucigalpa:{lat:14.0723,lon:-87.1921,tz:'America/Costa_Rica'}
+};
 var style='north', natal=null, transit=null, natalUTC=null, transitDate=null;
 var stepUnit='day';
 
@@ -578,6 +1323,32 @@ function calculate(){
 }
 // events
 document.getElementById('place').addEventListener('change',function(e){ var p=PLACES[e.target.value]; if(p){ document.getElementById('lat').value=p.lat; document.getElementById('lon').value=p.lon; document.getElementById('tz').value=p.tz; } });
+(function(){
+  var search=document.getElementById('placeSearch'), sel=document.getElementById('place'), hint=document.getElementById('placeHint');
+  if(!search||!sel) return;
+  var total=sel.querySelectorAll('option').length;
+  function applyFilter(){
+    var q=search.value.trim().toLowerCase(), shown=0, firstVisible=null;
+    sel.querySelectorAll('optgroup').forEach(function(g){
+      var any=false;
+      g.querySelectorAll('option').forEach(function(o){
+        var match=!q || o.textContent.toLowerCase().indexOf(q)>-1 || o.value.toLowerCase().indexOf(q)>-1;
+        o.hidden=!match; o.disabled=!match;
+        if(match){ any=true; shown++; if(!firstVisible) firstVisible=o; }
+      });
+      g.hidden=!any; g.disabled=!any;
+    });
+    // custom option is in its own group and handled above too
+    if(hint){ hint.textContent = q ? (shown===0 ? 'No place matches that search. Clear the search, or pick Custom lat / lon and enter coordinates below.' : shown+' place'+(shown===1?'':'s')+' match — open the list below to pick one. Custom lat / lon stays available for any town not listed.') : '350+ major cities worldwide: Indian state capitals & metros, Canada, the US, Europe, the Middle East, Asia-Pacific, Africa and Latin America. Pick \u201cCustom lat / lon\u201d below for any town not listed.'; }
+    return firstVisible;
+  }
+  search.addEventListener('input', applyFilter);
+  search.addEventListener('keydown', function(e){
+    if(e.key==='Enter'){ e.preventDefault(); var f=applyFilter(); if(f){ sel.value=f.value; sel.dispatchEvent(new Event('change')); sel.focus(); } }
+  });
+  sel.addEventListener('change', function(){ /* keep search in sync when a place is chosen from the list */ var o=sel.options[sel.selectedIndex]; if(o && sel.value!=='custom'){ /* leave search text as-is so user can refine */ } });
+})();
+
 document.getElementById('calcBtn').addEventListener('click',calculate);
 document.getElementById('exampleBtn').addEventListener('click',function(){ document.getElementById('bdate').value='1998-06-15'; document.getElementById('btime').value='10:30'; document.getElementById('place').value='delhi'; document.getElementById('lat').value=28.6139; document.getElementById('lon').value=77.2090; document.getElementById('tz').value='Asia/Kolkata'; calculate(); });
 document.getElementById('northBtn').addEventListener('click',function(){ style='north'; this.classList.add('active'); document.getElementById('southBtn').classList.remove('active'); render(); });
