@@ -1276,25 +1276,37 @@ function render(){
   document.getElementById('metaBar').innerHTML = '<span>♈ Lagna: <b>'+SIGNS[natal.asc.sign][1]+' '+fmtDeg(natal.asc.deg)+'</b></span><span>☽ Janma Rashi: <b>'+SIGNS[natal.planets.moon.sign][1]+'</b> • '+nak(natal.planets.moon.sid)+'</span><span>Transit: <b>'+transitDate.toLocaleDateString('en-CA',{dateStyle:'medium'})+'</b></span>';
   // build house map: for north, house index 1..12 maps sign = lagna+house-1; for south sign fixed
   var bySign={}; for(var s=0;s<12;s++) bySign[s]={natal:[],transit:[]};
-  bySign[natal.asc.sign].natal.push('As');
+  bySign[natal.asc.sign].natal.push({t:'As', deg:natal.asc.deg});
   function mark(p){ return p.abbr + (p.retro?'*':'') + (p.exalted?'▲':'') + (p.debilitated?'▼':''); }
-  Object.values(natal.planets).forEach(function(p){ bySign[p.sign].natal.push(mark(p)); });
-  Object.values(transit.planets).forEach(function(p){ bySign[p.sign].transit.push(mark(p)); });
+  Object.values(natal.planets).forEach(function(p){ bySign[p.sign].natal.push({t:mark(p), deg:p.deg}); });
+  Object.values(transit.planets).forEach(function(p){ bySign[p.sign].transit.push({t:mark(p), deg:p.deg}); });
   // also transit asc not shown as planet; ignore
   if(style==='north') renderNorth(bySign); else renderSouth(bySign);
   renderDasha();
 }
 function svgText(x,y,lines){
-  // lines: [{txt,fill,size,weight}]
+  // lines: [{txt,fill,size,weight}] or [{tokens:[{t,deg}],fill,size,weight}] — tokens render the degree as a small raised number after each planet
   var out='', startY=y - (lines.length-1)*9;
-  lines.forEach(function(l,i){ out+='<text x="'+x+'" y="'+(startY+i*18)+'" text-anchor="middle" dominant-baseline="middle" fill="'+l.fill+'" font-size="'+(l.size||13)+'" font-weight="'+(l.weight||600)+'" font-family="Public Sans,sans-serif">'+l.txt+'</text>'; });
+  lines.forEach(function(l,i){
+    var size=l.size||13, inner;
+    if(l.tokens){
+      var sup=Math.max(7,size-4), dy=-Math.round(size*0.42);
+      inner='';
+      l.tokens.forEach(function(tok,j){
+        if(j>0) inner+=' ';
+        inner+=tok.t;
+        if(tok.deg!=null) inner+='<tspan dy="'+dy+'" font-size="'+sup+'">'+Math.floor(tok.deg)+'</tspan><tspan dy="'+(-dy)+'"></tspan>';
+      });
+    } else inner=l.txt;
+    out+='<text x="'+x+'" y="'+(startY+i*18)+'" text-anchor="middle" dominant-baseline="middle" fill="'+l.fill+'" font-size="'+size+'" font-weight="'+(l.weight||600)+'" font-family="Public Sans,sans-serif">'+inner+'</text>';
+  });
   return out;
 }
 function linesFor(sign, bySign, showSignLabel){
   var d=bySign[sign], lines=[];
   if(showSignLabel) lines.push({txt:''+(sign+1), fill:'#a89f91', size:10, weight:700});
-  if(d.natal.length) lines.push({txt:d.natal.join(' '), fill:'#ffffff', size:13, weight:700});
-  if(d.transit.length) lines.push({txt:d.transit.join(' '), fill:'#ff8a2a', size:12, weight:700});
+  if(d.natal.length) lines.push({tokens:d.natal, fill:'#ffffff', size:13, weight:700});
+  if(d.transit.length) lines.push({tokens:d.transit, fill:'#ff8a2a', size:12, weight:700});
   if(!d.natal.length && !d.transit.length && !showSignLabel) lines.push({txt:'·', fill:'#5a5248', size:12});
   return lines;
 }
@@ -1312,8 +1324,8 @@ function renderNorth(bySign){
     var lines=[];
     lines.push({txt:''+(sign+1), fill:'#a89f91', size:9, weight:700});
     var d=bySign[sign];
-    if(d.natal.length) lines.push({txt:d.natal.join(' '), fill:'#ffffff', size:12, weight:700});
-    if(d.transit.length) lines.push({txt:d.transit.join(' '), fill:'#ff8a2a', size:11, weight:700});
+    if(d.natal.length) lines.push({tokens:d.natal, fill:'#ffffff', size:12, weight:700});
+    if(d.transit.length) lines.push({tokens:d.transit, fill:'#ff8a2a', size:11, weight:700});
     svg+=svgText(cents[h-1][0], cents[h-1][1], lines);
   }
   svg+='</svg>';
