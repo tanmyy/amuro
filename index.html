@@ -44,7 +44,7 @@ input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-ra
 .btn:active{transform:translateY(1px)}
 .smallbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .smallbtns button{flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:600;cursor:pointer;font-size:13px}
-.tnav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:14px}
+.tnav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;margin-top:14px}
 .tnav .arrow{width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:18px;font-weight:700;cursor:pointer;line-height:1;padding:0}
 .tnav .arrow:active{transform:translateY(1px)}
 .steptog{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:2px;gap:2px}
@@ -57,12 +57,16 @@ input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-ra
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:-1px;margin-right:6px}
 .dot.natal{background:#fff;border:2px solid #111;box-shadow:0 0 0 1px #fff inset}
 .dot.transit{background:var(--saffron2)}
-.chartbox{background:var(--chart-bg);border-radius:14px;padding:14px;border:1px solid #2a241e}
+.chartbox{background:var(--chart-bg);border-radius:14px;padding:14px;border:1px solid #2a241e;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.hmenu{position:fixed;z-index:60;background:#1e1a16;border:1px solid #c9a86a;border-radius:10px;padding:6px;min-width:220px;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.hmenu .hm-title{font-size:12px;color:var(--muted);padding:6px 10px 4px;font-weight:600}
+.hmenu button{display:block;width:100%;text-align:left;background:none;border:0;color:#fff;font:600 14px 'Public Sans',sans-serif;padding:10px;border-radius:7px;cursor:pointer}
+.hmenu button:hover,.hmenu button:active{background:#2a241e}
 .chartbox svg{width:100%;height:auto;display:block}
 .toggle{display:flex;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px}
 .toggle button{flex:1;border:0;background:transparent;padding:8px 12px;border-radius:999px;font-weight:700;cursor:pointer;color:var(--muted)}
 .toggle button.active{background:var(--ink);color:var(--bg)}
-.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
 .meta span{font-size:12.5px;background:var(--panel2);border:1px solid var(--line);padding:6px 9px;border-radius:999px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line)}
@@ -680,6 +684,16 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
     <!-- CHART -->
     <div>
       <div class="card" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+          <div><h2 id="chartTitle">North Indian chart</h2><p class="sub" style="margin:4px 0 0" id="chartSub">—</p></div>
+          <div class="toggle" role="tablist" aria-label="Chart style">
+            <button id="northBtn" class="active">North Indian</button>
+            <button id="southBtn">South Indian</button>
+          </div>
+        </div>
+        <div class="meta" id="metaBar"></div>
+        <div class="chartbox" id="chartBox"></div>
+        <p class="note" style="margin:10px 0 0"><span class="dot natal"></span><b>White</b> = natal &nbsp;&nbsp;<span class="dot transit"></span><b style="color:var(--saffron)">Orange</b> = transit &nbsp;&nbsp;<b>*</b> = retrograde &nbsp;&nbsp;<b>▲</b> = exalted &nbsp;&nbsp;<b>▼</b> = debilitated</p>
         <div class="tnav" aria-label="Transit date controls">
           <button class="arrow" id="prevBtn" aria-label="Step transit date back" title="Step back (← arrow key)">‹</button>
           <div class="steptog" role="group" aria-label="Step size">
@@ -691,19 +705,16 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted)}
           <button class="nowbtn" id="nowBtn">Today</button>
           <span class="tdate-label" id="transitLabel"></span>
         </div>
-        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
-          <div><h2 id="chartTitle">North Indian chart</h2><p class="sub" style="margin:4px 0 0" id="chartSub">—</p></div>
-          <div class="toggle" role="tablist" aria-label="Chart style">
-            <button id="northBtn" class="active">North Indian</button>
-            <button id="southBtn">South Indian</button>
-          </div>
-        </div>
-        <div class="chartbox" id="chartBox"></div>
-        <p class="note" style="margin:10px 0 0"><span class="dot natal"></span><b>White</b> = natal &nbsp;&nbsp;<span class="dot transit"></span><b style="color:var(--saffron)">Orange</b> = transit &nbsp;&nbsp;<b>*</b> = retrograde &nbsp;&nbsp;<b>▲</b> = exalted &nbsp;&nbsp;<b>▼</b> = debilitated</p>
-        <div class="meta" id="metaBar"></div>
       </div>
 
     </div>
+  </div>
+
+  <div class="hmenu" id="houseMenu" hidden>
+    <div class="hm-title" id="houseMenuTitle"></div>
+    <button type="button" id="hmFirst">Make this the first house</button>
+    <button type="button" id="hmReset" hidden>Back to Lagna</button>
+    <button type="button" id="hmCancel">Cancel</button>
   </div>
 
   <!-- DASHA -->
@@ -1113,6 +1124,8 @@ tegucigalpa:{lat:14.0723,lon:-87.1921,tz:'America/Costa_Rica'}
 };
 var style='north', natal=null, transit=null, natalUTC=null, transitDate=null;
 var stepUnit='day';
+var viewSign=null; // sign treated as the first house when set by long-press; null = natal Lagna
+function firstSign(){ return (viewSign==null||!natal) ? (natal?natal.asc.sign:0) : viewSign; }
 
 // ---------- Vimshottari Dasha ----------
 var DASHA_ORDER=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
@@ -1276,7 +1289,7 @@ function render(){
   document.getElementById('metaBar').innerHTML = '<span>♈ Lagna: <b>'+SIGNS[natal.asc.sign][1]+' '+fmtDeg(natal.asc.deg)+'</b></span><span>☽ Janma Rashi: <b>'+SIGNS[natal.planets.moon.sign][1]+'</b> • '+nak(natal.planets.moon.sid)+'</span><span>Transit: <b>'+transitDate.toLocaleDateString('en-CA',{dateStyle:'medium'})+'</b></span>';
   // build house map: for north, house index 1..12 maps sign = lagna+house-1; for south sign fixed
   var bySign={}; for(var s=0;s<12;s++) bySign[s]={natal:[],transit:[]};
-  bySign[natal.asc.sign].natal.push({t:'As', deg:natal.asc.deg});
+  bySign[firstSign()].natal.push({t:'As', deg:natal.asc.deg});
   function mark(p){ return p.abbr + (p.retro?'*':'') + (p.exalted?'▲':'') + (p.debilitated?'▼':''); }
   Object.values(natal.planets).forEach(function(p){ bySign[p.sign].natal.push({t:mark(p), deg:p.deg}); });
   Object.values(transit.planets).forEach(function(p){ bySign[p.sign].transit.push({t:mark(p), deg:p.deg}); });
@@ -1319,7 +1332,8 @@ function renderNorth(bySign){
   var svg='<svg viewBox="0 0 400 400" role="img" aria-label="North Indian Vedic chart">';
   svg+='<rect x="1" y="1" width="398" height="398" fill="#141210" stroke="#c9a86a" stroke-width="2"/>';
   for(var h=1;h<=12;h++){
-    var sign=(natal.asc.sign + h -1)%12;
+    var sign=(firstSign() + h -1)%12;
+    svg+='<g data-sign="'+sign+'">';
     svg+='<polygon points="'+polys[h-1]+'" fill="'+(h===1?'#1e1a16':'transparent')+'" stroke="#5a4f42" stroke-width="1"/>';
     var lines=[];
     lines.push({txt:''+(sign+1), fill:'#a89f91', size:9, weight:700});
@@ -1327,6 +1341,7 @@ function renderNorth(bySign){
     if(d.natal.length) lines.push({tokens:d.natal, fill:'#ffffff', size:12, weight:700});
     if(d.transit.length) lines.push({tokens:d.transit, fill:'#ff8a2a', size:11, weight:700});
     svg+=svgText(cents[h-1][0], cents[h-1][1], lines);
+    svg+='</g>';
   }
   svg+='</svg>';
   document.getElementById('chartBox').innerHTML=svg;
@@ -1342,9 +1357,11 @@ function renderSouth(bySign){
   svg+='<text x="200" y="225" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">Lagna: '+SIGNS[natal.asc.sign][1]+'</text>';
   cells.forEach(function(c){
     var x=c[1]*100, y=c[0]*100, sign=c[2];
+    svg+='<g data-sign="'+sign+'">';
     svg+='<rect x="'+x+'" y="'+y+'" width="100" height="100" fill="transparent" stroke="#5a4f42"/>';
-    if(sign===natal.asc.sign) svg+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+22)+'" y2="'+(y+22)+'" stroke="#c9a86a" stroke-width="2"/>';
+    if(sign===firstSign()) svg+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+22)+'" y2="'+(y+22)+'" stroke="#c9a86a" stroke-width="2"/>';
     svg+=svgText(x+50, y+50, linesFor(sign, bySign, true));
+    svg+='</g>';
   });
   svg+='</svg>';
   document.getElementById('chartBox').innerHTML=svg;
@@ -1363,6 +1380,37 @@ function calculate(){
 }
 // events
 document.getElementById('place').addEventListener('change',function(e){ var p=PLACES[e.target.value]; if(p){ document.getElementById('lat').value=p.lat; document.getElementById('lon').value=p.lon; document.getElementById('tz').value=p.tz; } });
+// ---------- Long-press a house: view the chart from that house ----------
+var pressTimer=null, pressSign=null, pressX=0, pressY=0, menuSign=null;
+var chartBoxEl=document.getElementById('chartBox');
+function houseFromEvent(e){ var g=(e.target&&e.target.closest)?e.target.closest('[data-sign]'):null; return g?parseInt(g.getAttribute('data-sign'),10):null; }
+function showHouseMenu(sign,x,y){
+  menuSign=sign;
+  var m=document.getElementById('houseMenu');
+  var houseNo = natal ? ((sign - natal.asc.sign + 12)%12)+1 : '';
+  document.getElementById('houseMenuTitle').textContent = SIGNS[sign][1] + (houseNo? ' · House '+houseNo : '');
+  document.getElementById('hmReset').hidden = (viewSign==null);
+  m.hidden=false;
+  var w=236, hgt=190;
+  m.style.left=Math.max(8, Math.min(x-w/2, window.innerWidth-w-8))+'px';
+  m.style.top=Math.max(8, Math.min(y+12, window.innerHeight-hgt-8))+'px';
+}
+function hideHouseMenu(){ document.getElementById('houseMenu').hidden=true; menuSign=null; }
+chartBoxEl.addEventListener('pointerdown',function(e){
+  var s=houseFromEvent(e); if(s==null) return;
+  pressSign=s; pressX=e.clientX; pressY=e.clientY;
+  clearTimeout(pressTimer);
+  pressTimer=setTimeout(function(){ pressTimer=null; if(navigator.vibrate) navigator.vibrate(10); showHouseMenu(pressSign,pressX,pressY); },550);
+});
+chartBoxEl.addEventListener('pointermove',function(e){
+  if(pressTimer && (Math.abs(e.clientX-pressX)>10 || Math.abs(e.clientY-pressY)>10)){ clearTimeout(pressTimer); pressTimer=null; }
+});
+['pointerup','pointercancel','pointerleave'].forEach(function(ev){ chartBoxEl.addEventListener(ev,function(){ clearTimeout(pressTimer); pressTimer=null; }); });
+chartBoxEl.addEventListener('contextmenu',function(e){ var s=houseFromEvent(e); if(s!=null){ e.preventDefault(); showHouseMenu(s,e.clientX,e.clientY); } });
+document.getElementById('hmFirst').addEventListener('click',function(){ if(menuSign!=null){ viewSign=menuSign; hideHouseMenu(); render(); } });
+document.getElementById('hmReset').addEventListener('click',function(){ viewSign=null; hideHouseMenu(); render(); });
+document.getElementById('hmCancel').addEventListener('click',hideHouseMenu);
+document.addEventListener('pointerdown',function(e){ var m=document.getElementById('houseMenu'); if(!m.hidden && !m.contains(e.target)) hideHouseMenu(); });
 // ---------- Place picker: tap-and-type combobox over the hidden select ----------
 var placeEntries=[], placeMatches=[];
 var PLACE_ALIASES={bangalore:'bengaluru',bombay:'mumbai',calcutta:'kolkata',madras:'chennai',nyc:'new york'};
